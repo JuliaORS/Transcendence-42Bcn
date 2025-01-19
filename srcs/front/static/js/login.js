@@ -151,7 +151,6 @@ export const handleSignup = () => {
     
     fetch(baseUrl + ":8000/api/signup-form/", {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
         credentials: "include"
     })
     .then(response => response.json()) // Expecting JSON response
@@ -190,11 +189,7 @@ export const handleSignup = () => {
                         console.error('Error submitting signup form:', error);
                     });
                 });
-            } else {
-                console.error('Signup form not found in the loaded HTML.');
-            }
-        } else {
-            console.error('Form HTML not found in response:', data);
+            } 
         }
     })
     .catch(error => {
