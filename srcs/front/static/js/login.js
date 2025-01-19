@@ -95,7 +95,8 @@ export const makeAuthenticatedRequest = (url, options = {}) => {
 
 export const loadLoginPage = () => {
     fetch(baseUrl + ":8000/api/login-form/", {
-        method: 'GET'
+        method: 'GET',
+        credentials: "include"
     })
     .then((response) => response.json())
     .then(data => {
@@ -150,7 +151,8 @@ export const handleSignup = () => {
     
     fetch(baseUrl + ":8000/api/signup-form/", {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        credentials: "include"
     })
     .then(response => response.json()) // Expecting JSON response
     .then(data => {
@@ -160,7 +162,6 @@ export const handleSignup = () => {
 
             const signupForm = document.getElementById('signup-form');
             if (signupForm) {
-                console.log('Inside if signup form!');
                 signupForm.addEventListener('submit', (event) => {
                     event.preventDefault();
                     console.log('Submit of signup clicked!');
@@ -178,6 +179,7 @@ export const handleSignup = () => {
                         if (data.success) {
                             localStorage.setItem('access_token', data.tokens.access);
                             localStorage.setItem('refresh_token', data.tokens.refresh);
+                            updateLanguage();
                             //loadProfilePage();
                             navigateTo('/home', true);
                         } else {

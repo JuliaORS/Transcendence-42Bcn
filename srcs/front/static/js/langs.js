@@ -1,4 +1,5 @@
 import { makeAuthenticatedRequest } from "./login.js";
+import { clearURL, navigateTo } from "./main.js"
 
 function getUserPreferenceLanguageFromDB() {
     return makeAuthenticatedRequest("http://localhost:8000/api/get-user-pref-lang", {
@@ -60,12 +61,12 @@ function updateLanguageButtonUI(lang) {
 }
 
 export async function updateLanguage(lang) {
-    let lang_is_defined = true;
+    let lang_is_defined = true; 
     
     //STEP 1: Get user language preference when login (no lang passed as parameter)
-    if (!lang){
-        lang_is_defined = false;
-        lang = await getUserPreferenceLanguageFromDB() || "en";
+    if (!lang){ //when login /signin
+        lang_is_defined = false; //when login/signin 
+        lang = await getUserPreferenceLanguageFromDB();
     }
 
     //STEP 2: Set language cookies
@@ -80,6 +81,9 @@ export async function updateLanguage(lang) {
     updateLanguageButtonUI(lang);
 
     //STEP 5: TODO: Update page (Pending Dina code)
+    if (lang_is_defined) {
+        navigateTo(window.location.pathname, true);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {

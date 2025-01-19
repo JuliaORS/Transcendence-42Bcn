@@ -7,7 +7,7 @@ class Profile(models.Model):
     # Uploaded photos go to 'media/user_photos/'
     friends = models.ManyToManyField('self', symmetrical=False, related_name='friend_of', blank=True)
     online_status = models.BooleanField(default=False)
-    language = models.CharField(max_length=10, default="en")
+    language = models.CharField(max_length=10, default="")
     two_fa = models.BooleanField(default=False)
     totp_secret = models.CharField(max_length=32, blank=True, null=True)
 

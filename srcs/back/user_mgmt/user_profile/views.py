@@ -230,7 +230,7 @@ def save_user_pref_lang(request):
 def get_user_pref_lang(request):
     if request.user.is_authenticated:
         lang = request.user.profile.language
-        return JsonResponse({'status': 'success', 'language': lang}, status=200)
-    else:
-        return JsonResponse({'status': 'error', 'message': 'Language not found for user.'}, status=404)
+        if (lang == ""):
+            lang = request.COOKIES.get('language') or 'en'
+    return JsonResponse({'status': 'success', 'language': lang}, status=200)
 

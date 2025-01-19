@@ -70,7 +70,7 @@ export function navigateTo(path, replace = false) {
         historyTracker.push({ action: 'pushState', path });
         console.log(`${path} is pushed to history`)
     }
-    console.log('History Tracker:', JSON.stringify(historyTracker, null, 2)); // Log the history
+    //console.log('History Tracker:', JSON.stringify(historyTracker, null, 2)); // Log the history
     router();
 }
 
