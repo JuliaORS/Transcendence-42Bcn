@@ -19,7 +19,6 @@ from django.contrib.auth import authenticate, login
 from django.template.loader import render_to_string
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-# from .models import Profile
 from game.utils.translations import add_language_context
 from rest_framework import status
 import json
@@ -34,7 +33,10 @@ from django.urls import path, include
 import redis
 from django.http import JsonResponse
 from .models import Tournament
-from django.core.cache import cache 
+from django.core.cache import cache
+import random
+import string
+import secrets
 
 @api_view(['GET'])
 def get_player_tournament_statistics(request, player_id):
@@ -56,43 +58,44 @@ def tournament_home_page(request):
     return JsonResponse({'tournament_home_page_html': tournament_home_page_html}, content_type="application/json")
 
 def get_next_tournament_id():
-    last_id = cache.get("last_tournament_id")  # Fetch from Redis
-    if last_id is None:
-        last_id = 0
-    next_id = last_id + 1
-    cache.set("last_tournament_id", next_id, timeout=None)  # TODO: take from the database or REDIS!! i dont know the last tournament_id
-    return f"{next_id:04d}"
+    last_id = cache.get("last_tournament_id", 0)
+    tournament_id = last_id + 1
+    cache.set("last_tournament_id", tournament_id)
+    return tournament_id
+
+def generate_tournament_code():
+    characters = string.ascii_letters + string.digits + "!@#$%^&*()"
+    return ''.join(random.choices(characters, k=7))
 
 @api_view(['GET'])
 def tournament_creator(request):
     username = request.user.username
     tournament_id = get_next_tournament_id()
     players = [username]
-    # scores = {}
+    code = generate_tournament_code()
 
     tournament_data = {
         "tournament_id": tournament_id,
+        "code": code,
         "user_creator": username,
         "players": players,
         "status": "waiting",
         # "score": score,
         #"rounds": [[user1 : user2][user3: use3]]] [[user2 : user3]] [round3]
     }
-    
     cache.set(f"tournament:{tournament_id}", tournament_data, timeout=3600)
+
     return JsonResponse({
         "success": True,
-        "message": "Tournament created",
+        "code": code,
         "tournament_id": tournament_id
     }, content_type="application/json")
-
 
 @api_view(['GET'])
 def get_players_count(request, tournament_id):
     tournament_data = cache.get(f"tournament:{tournament_id}")
     if not tournament_data:
         return JsonResponse({'error': 'Tournament not found in cache'}, status=404)
-
     players_count = len(tournament_data["players"])
 
     return JsonResponse({'players_count': players_count})
@@ -103,7 +106,6 @@ def get_tournament_data(request, tournament_id):
 
     if not tournament_data:
         return JsonResponse({'error': 'Tournament not found in cache'}, status=404)
-
     return JsonResponse(tournament_data)
 
 
@@ -138,15 +140,14 @@ def join_tournament(request, tournament_id):
 
 @api_view(['GET'])
 def waiting_room_page(request, tournament_id):
-    print('waiting roooooom')
     tournament_data = cache.get(f"tournament:{tournament_id}")
-
     if not tournament_data:
         return JsonResponse({'error': 'Tournament not found'}, status=404)
     
     context = {
         'tournament_id': tournament_id,
         'player_count': len(tournament_data['players']),  # Corrected: access players as a dictionary key
+        'code': tournament_data['code'],
     }
     add_language_context(request, context)
     waiting_room_html = render_to_string('waiting_room.html', context)

@@ -26,15 +26,7 @@ export const createTournament = () => {
     .then((response) => response.json())
     .then(data => {
         if (data.success) {
-            alert("tournament is successfully created!");
-            loadWaitingRoomPage(data.tournament_id);
-    
-    // .then(data => {
-    //     if (data.tournament_creator_html) {
-    //         document.getElementById('content-area').innerHTML = data.tournament_creator_html;
-    //         
-            
-    //       waitingUntilTournamentStarts(data.tournamentId);
+            navigateTo('/waiting-room', true, data.tournament_id)
         } else {
             console.error('Create tournament page HTML not found in response:', data);
         }
@@ -62,15 +54,10 @@ export const loadJoinTournamentPage = () => {
 
 export const handleJoinTournament = () => {
     const tournamentId = document.getElementById('tournament-id-input').value.trim();
-
-
-    console.log('IDDDDDDD ', tournamentId);
     if (!tournamentId) {
         alert("Please enter a tournament ID.");
         return;
     }
-
-
 
     makeAuthenticatedRequest(`${baseUrl}:8001/api/join-tournament/${tournamentId}/`,
         {method: "POST", credentials: "include"})
@@ -91,6 +78,10 @@ export const handleJoinTournament = () => {
 };
 
 export const loadWaitingRoomPage = (tournamentId) => {
+    if (!tournamentId) {
+        console.error("Missing tournamentId for waiting room page!");
+        return;
+    }
     makeAuthenticatedRequest(`${baseUrl}:8001/api/waiting-room-page/${tournamentId}`, 
         {method: "GET", 
         credentials: "include"})

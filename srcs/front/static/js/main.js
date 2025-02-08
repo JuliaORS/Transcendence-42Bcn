@@ -53,11 +53,11 @@ const routes = {
 // based on the current path (window.location.pathname).
 // If the path exists in the routes object, its associated function is executed.
 
-function router() {
+function router(args=null) {
     let path = window.location.pathname;
 
     if (routes[path]) {
-        routes[path](); // Call the function associated with the path
+        routes[path](args); // Call the function associated with the path
     } else {
         alert("path doesn't exists");
         console.log(`Route ${path} not handled`);
@@ -85,7 +85,7 @@ function router() {
 // Additionally, a historyTracker array is maintained for debugging, which logs every navigation event 
 // (pushState or replaceState).
 
-export function navigateTo(path, replace = false) {
+export function navigateTo(path, replace = false, args=null) {
     console.log(`navigating to ${path}`)
     if (replace) {
         history.replaceState({ path }, null, path);
@@ -99,7 +99,7 @@ export function navigateTo(path, replace = false) {
         console.log(`${path} is pushed to history`)
     }
     //console.log('History Tracker:', JSON.stringify(historyTracker, null, 2)); // Log the history
-    router();
+    router(args);
 }
 
 // The clearURL() function removes query parameters from the URL 
@@ -165,7 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 event.preventDefault();
             }
 
-            navigateTo(route);
+            const shouldModifyURL = !target.hasAttribute('not-modify-url');
+
+            navigateTo(route, shouldModifyURL);
         }
     });
 
