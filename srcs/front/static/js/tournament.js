@@ -20,7 +20,7 @@ export const loadTournamentHomePage = () => {
     });
 };
 
-export const createTournament = () => {
+export const handleCreateTournament = () => {
     makeAuthenticatedRequest(baseUrl + ":8001/api/tournament-creator/", 
         {method: "GET", credentials: "include"})
     .then((response) => response.json())
@@ -52,39 +52,33 @@ export const loadJoinTournamentPage = () => {
     });
 };
 
-export const handleJoinTournament = () => {
-    const tournamentId = document.getElementById('tournament-id-input').value.trim();
-    if (!tournamentId) {
-        alert("Please enter a tournament ID.");
-        return;
-    }
+export const handleJoinTournament = async () => {
+    const tournamentCode = document.getElementById('tournament-code-input').value.trim();
 
-    makeAuthenticatedRequest(`${baseUrl}:8001/api/join-tournament/${tournamentId}/`,
-        {method: "POST", credentials: "include"})
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Successfully joined the tournament!");
-            console.log('TOURNAMENT IDDDDDDDDD: ', tournamentId);
-            loadWaitingRoomPage(tournamentId);
+    const response = await makeAuthenticatedRequest(`${baseUrl}:8001/api/get-tournament-id/`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tournament_code: tournamentCode })
+    });
+
+    response.json().then(data => {
+        if (data.success && data.tournament_id) {
+            navigateTo('/waiting-room', true, data.tournament_id);
         } else {
             alert(data.error || "Failed to join tournament.");
         }
-    })
-    .catch(error => {
+    }).catch(error => {
         console.error('Error joining tournament', error);
         alert("An error occurred. Please try again.");
     });
 };
 
 export const loadWaitingRoomPage = (tournamentId) => {
-    if (!tournamentId) {
-        console.error("Missing tournamentId for waiting room page!");
-        return;
-    }
-    makeAuthenticatedRequest(`${baseUrl}:8001/api/waiting-room-page/${tournamentId}`, 
-        {method: "GET", 
-        credentials: "include"})
+    makeAuthenticatedRequest(`${baseUrl}:8001/api/waiting-room-page/${tournamentId}`, {
+        method: "GET",
+        credentials: "include"
+    })
     .then((response) => response.json())
     .then(data => {
         if (data.waiting_room_html) {
@@ -95,9 +89,9 @@ export const loadWaitingRoomPage = (tournamentId) => {
         }
     })
     .catch(error => {
-        console.error('Error loading page', error);
+    console.error('Error loading page', error);
     });
-};
+}
 
 const waitingUntilTournamentStarts = (tournamentId) => {
     const startButton = document.getElementById('start-tournament-button');

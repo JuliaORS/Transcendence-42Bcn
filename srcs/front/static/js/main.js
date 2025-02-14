@@ -6,7 +6,7 @@ import { loadFriendsSearchPage } from "./friends.js"
 import { handleLogout } from "./logout.js"
 import { loadLogin2FAPage, enable2FA, disable2FA } from "./twoFA.js";
 import { playLocal, playAI, playOnline, gameLocal } from "./game.js"
-import { loadTournamentHomePage, loadJoinTournamentPage, createTournament, handleJoinTournament, loadBracketTournamentPage, loadWaitingRoomPage } from "./tournament.js";
+import { loadTournamentHomePage, loadJoinTournamentPage, handleCreateTournament, handleJoinTournament, loadBracketTournamentPage, loadWaitingRoomPage } from "./tournament.js";
 // import { gameLocal } from "./localGame.js"
 
 const historyTracker = [];
@@ -37,11 +37,11 @@ const routes = {
     '/play-online': playOnline,
     '/play-local/game': gameLocal,
     '/tournament': loadTournamentHomePage,
-    '/create-tournament': createTournament,
+    '/create-tournament': handleCreateTournament,
     '/join-tournament-page': loadJoinTournamentPage,
+    '/join-tournament': handleJoinTournament,
     '/waiting-room': loadWaitingRoomPage,
-    '/waiting-room-joinner': handleJoinTournament,
-
+    // '/waiting-room-joinner': handleJoinTournament,
     '/tournament-bracket': loadBracketTournamentPage,
 
     // EXAMPLE how to announce a function that receives parameters:
