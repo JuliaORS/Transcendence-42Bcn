@@ -1,56 +1,30 @@
-<div class="container-bracket4 tournament-bracket">
-<section id="bracket">
-    <div class="row justify-content-center bracket">
-        <!-- First Round -->
-        <div class="col-md-4 round">
-            <ul class="list-unstyled">
-                <li class="match bg-secondary text-white p-3 rounded mb-3" style="position: relative;">
-                    <div class="player">Player 1</div>
-                    <div class="connector"></div>
-                </li>
-                <li class="match bg-secondary text-white p-3 rounded mb-3" style="position: relative;">
-                    <div class="player">Player 2</div>
-                    <div class="connector"></div>
-                </li>
-                <li class="match bg-secondary text-white p-3 rounded mb-3" style="position: relative;">
-                    <div class="player">Player 3</div>
-                    <div class="connector"></div>
-                </li>
-                <li class="match bg-secondary text-white p-3 rounded mb-3" style="position: relative;">
-                    <div class="player">Player 4</div>
-                    <div class="connector"></div>
-                </li>
-            </ul>
-        </div>
+<div id="tournament-bracket-8"></div>
+  <div class="hero-wrap">
+      <h1 id="headline">Tournament</h1>
+  </div>
+  <section id="bracket">
+    <div class="container">
+      <div class="round round-one current">
+        <div class="split split-one"></div>
+          <div class="round-details">Round 1<br/></div>
+          <ul class="matchup">
+            <li class="team team-top">user1</li>
+            <li class="team team-bottom">user2</li>
+          </ul>
+          <ul class="matchup">
+            <li class="team team-top">user3</li>
+            <li class="team team-bottom">user4</li>
+          </ul>                 
+        </div>  <!-- END ROUND ONE -->
 
-        <!-- Second Round -->
-        <div class="col-md-4 round" style="position: relative;">
-            <ul class="list-unstyled">
-                <li class="match bg-secondary text-white p-3 rounded mb-3" style="position: relative;">
-                    <div class="player">Winner 1</div>
-                    <div class="connector"></div>
-                </li>
-                <li class="match bg-secondary text-white p-3 rounded mb-3" style="position: relative;">
-                    <div class="player">Winner 2</div>
-                    <div class="connector"></div>
-                    <!-- <div class="vertical"></div> -->
-                </li>
-            </ul>
-        </div>
-        <!-- Final Round -->
-        <div class="col-md-4 round" style="position: relative;">
-            <ul class="list-unstyled">
-                <li class="match bg-secondary text-white p-3 rounded mb-3" style="position: relative;">
-                    <div class="player">Champion</div>
-                    <!-- <div class="vertical"></div> -->
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="d-flex justify-content-center">
-        <div class="col-12 col-md-6">
-            <button class="btn btn-grey-purple btn-large w-100" data-route="/home">{{ home }}</button>
-        </div>
-    </div>
+        <div class="round round-two">
+          <div class="round-details">Round 2<br/></div>     
+            <ul class="matchup">
+              <li class="team team-top">winner1</li>
+              <li class="team team-bottom">winner2</li>
+            </ul>                  
+        </div>  <!-- END ROUND TWO -->
+      </div> 
+    </div> 
 </section>
-</div>
+</div> 

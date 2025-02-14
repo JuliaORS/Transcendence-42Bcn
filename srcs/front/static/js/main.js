@@ -5,8 +5,8 @@ import { loadHomePage } from "./home.js";
 import { loadFriendsSearchPage } from "./friends.js"
 import { handleLogout } from "./logout.js"
 import { loadLogin2FAPage, enable2FA, disable2FA } from "./twoFA.js";
-import { playLocal, playAI, playOnline, gameLocal, gameAI } from "./game.js"
-import { loadTournamentHomePage, loadJoinTournamentPage, createTournament, handleJoinTournament, loadBracketTournamentPage, loadWaitingRoomPage } from "./tournament.js";
+import { playLocal, playAI, playOnline, gameLocal } from "./game.js"
+import { loadTournamentHomePage, loadJoinTournamentPage, handleCreateTournament, handleJoinTournament, loadBracketTournamentPage, loadWaitingRoomPage } from "./tournament.js";
 // import { gameLocal } from "./localGame.js"
 
 const historyTracker = [];
@@ -38,11 +38,11 @@ const routes = {
     '/play-local/game': gameLocal,
     '/play-ai/game': (args) => gameAI(args),
     '/tournament': loadTournamentHomePage,
-    '/create-tournament': createTournament,
+    '/create-tournament': handleCreateTournament,
     '/join-tournament-page': loadJoinTournamentPage,
+    '/join-tournament': handleJoinTournament,
     '/waiting-room': loadWaitingRoomPage,
-    '/waiting-room-joinner': handleJoinTournament,
-
+    // '/waiting-room-joinner': handleJoinTournament,
     '/tournament-bracket': loadBracketTournamentPage,
 
     // EXAMPLE how to announce a function that receives parameters:
@@ -92,6 +92,7 @@ export function navigateTo(path, replace = false, args = null) {
     // // Extract query params
     // const [cleanPath, queryString] = path.split("?");
     // const args = Object.fromEntries(new URLSearchParams(queryString));
+
 
     if (replace) {
         history.replaceState({ path, args }, null, path);
