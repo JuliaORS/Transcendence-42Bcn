@@ -12,7 +12,10 @@ urlpatterns = [
     path('api/game/local/get-name/', localGame.get_second_name, name='get_second_name'),
     path('api/game/local/play/', localGame.play_game, name='play_game'),
     path('api/game/local/save-local-score/', localGame.save_local_score, name='save_local_score'),
+    path('api/game/remote/play/', views.play_game, name='play_game'),
     # path('api/game/local/save-score')
+
+    path('api/game/ai/get-difficulty/', views.get_difficulty_level, name='get_difficulty_level'),
 
     path('api/player/<int:player_id>/game_statistics/', views.get_player_game_statistics, name='player_game_statistics'),
     path('api/player/<int:player_id>/last_ten_games/', views.get_player_last_ten_games, name='last_ten_games'),

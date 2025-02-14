@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from .models import Game
 from .serializers import PlayerSerializer, GameSerializer
@@ -8,6 +9,9 @@ from django.contrib.auth.models import User
 import random
 from django.db.models import Q
 from game.utils.translations import add_language_context
+from django.utils.translation import activate
+from django.template.loader import render_to_string
+from django.http import JsonResponse
  
 @api_view(['GET'])
 def player_list(request):
@@ -95,8 +99,8 @@ def get_player_last_ten_games(request, player_id):
     try:
         games = (
             Game.objects.filter(Q(player1_id=player_id) | Q(player2_id=player_id))
-            .order_by('id')[:10]
-        )
+            .order_by('-id')[:10]
+        )[::-1]
 
         games_data = [
             {
@@ -121,9 +125,10 @@ def get_player_all_games(request, player_id):
     try:
         games = (
             Game.objects.filter(Q(player1_id=player_id) | Q(player2_id=player_id))
-            .order_by('id')
+            .order_by('-id')
         )
-
+        print("GAMES OBJECTS:::")
+        print(games)
         games_data = [
             {
                 "id": game.id,
@@ -137,8 +142,32 @@ def get_player_all_games(request, player_id):
             }
             for game in games
         ]
+        print(game_data)
 
         return Response(games_data, status=status.HTTP_200_OK)
 
     except Exception as e:
         return Response({"error": f"An unexpected error ocurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_difficulty_level(request):
+    print("we are inside")
+    if request.user:
+        context = {
+            'user': request.user,
+        }
+        add_language_context(request, context)
+        get_difficulty_html = render_to_string('get_difficulty.html', context)
+        return JsonResponse({'get_difficulty_html': get_difficulty_html}, content_type="application/json")
+    else:
+        return JsonResponse({'error': 'user not authenticated'}, status=402)
+
+@api_view(['GET'])
+def play_game(request):
+    context = {
+        'user': request.user,
+    }
+    add_language_context(request, context)
+    game_html = render_to_string('remote_game.html', context)
+    return JsonResponse({'game_html': game_html}, content_type="application/json")
+

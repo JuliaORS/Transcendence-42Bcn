@@ -1,25 +1,18 @@
 import { Ball, Player } from "./remoteClasses.js";
 import { setupControls } from "./localGame.js"
 
-let canvas = null;
-let ctx = null;
-
-let ball = null;
-const ballCoef = 0.3;
-
 const endgameMsg = {
 	"winner": "Congratuations! You've won!\n",
 	"loser": "Better luck next time :')\n",
 }
 
-let targetBallX = null;
-let targetBallY = null;
+let canvas, ctx = null;
+
+const ballCoef = 0.3;
+let ball, targetBallX, targetBallY = null;
+let player, opponent = null;
+
 let socket = null;
-
-let player = null;
-let opponent = null;
-
-let wait = 1;
 let gameLoopId = null;
  
 console.log("Hi! This is remoteGame.js :D");
@@ -62,8 +55,11 @@ function handleEndgame(data) {
 	cancelAnimationFrame(gameLoopId);
 }
 
+//function initializeWebSocket(roomId) {
 function initializeWebSocket() {
-	const roomID = new URLSearchParams(window.location.search).get("room") || "default";
+	//const roomID = new URLSearchParams(window.location.search).get("room") || "default";
+	const roomId = 123
+
 	const token = localStorage.getItem("access_token");
 	if (!token)
 	{
@@ -71,7 +67,7 @@ function initializeWebSocket() {
 		return ;
 	}
 	console.log("token is: " + token);
-	socket = new WebSocket(`ws://localhost:8001/ws/ping_pong/${roomID}/?token=${token}`);
+	socket = new WebSocket(`ws://localhost:8001/ws/G/${roomId}/?token=${token}`);
 
 	socket.onopen = () => console.log("WebSocket connection established.");
 	socket.onerror = (error) => {
@@ -85,18 +81,17 @@ function initializeWebSocket() {
 
 	socket.onmessage = (event) => {
 		const data = JSON.parse(event.data);
-		//console.log("data.type: " + data.type);
-		if (data.hasOwnProperty("wait"))
-			wait = data.wait;
-		//if (data.type == "role" && data.type != "update")
-		//	console.log("data.type: " + data.type + " role: " + data.role);
 
 		switch (data.type) {
 			case "status":
+				console.log("status msg received! wait = " + data.wait)
 				displayStatus(data.wait);
 				if (!data.wait)
-					setupControls()
+				{
+					//console.log("player: " + player + " p.role: " + player.role);
+					setupControls(player, opponent)
 					gameLoop();
+				}
 				break;
 			case "role":
 				handleRoleAssignment(data.role);
@@ -104,7 +99,7 @@ function initializeWebSocket() {
 			case "update":
 				if (data.wait)
 					return;
-				//console.log(data);
+				console.log(player.role + " is receiving updates");
 				if (data.players)
 				{
 					if (player.role == "player1")
@@ -125,6 +120,46 @@ function initializeWebSocket() {
 		}
 	};
 }
+/*
+function ft_switch(data)
+{
+		switch (data.type) {
+			case "status":
+				console.log("status msg received! wait = " + data.wait)
+				displayStatus(data.wait);
+				if (!data.wait)
+				{
+					//console.log("player: " + player + " p.role: " + player.role);
+					setupControls(player, opponent)
+					gameLoop();
+				}
+				break;
+			case "role":
+				handleRoleAssignment(data.role);
+				break;
+			case "update":
+				if (data.wait)
+					return;
+				if (data.players)
+				{
+					if (player.role == "player1")
+						opponent.update(data.players.player2.y, data.scores.player2);
+					else if (player.role == "player2")
+						opponent.update(data.players.player1.y, data.scores.player1);
+				}
+				if (data.ball) {
+					targetBallX = data.ball.x;
+					targetBallY = data.ball.y;
+				}
+				break;
+			case "endgame":
+				handleEndgame(data);
+				break;
+			default:
+				console.warn("Unhandled message type:", data.type);
+		}
+	
+}*/
 
 function gameLoop() {
 	gameLoopId = requestAnimationFrame(gameLoop);
@@ -141,21 +176,15 @@ function gameLoop() {
 	ball.move(player, opponent, gameLoopId, socket);
 }
 
-// window.addEventListener('keydown', (e) => {
-// 	if (e.key === 'w' || e.key === 'ArrowUp') player.up = true;
-// 	if (e.key === 's' || e.key === 'ArrowDown') player.down = true;
-// });
 
-// window.addEventListener('keyup', (e) => {
-// 	if (e.key === 'w' || e.key === 'ArrowUp') player.up = false;
-// 	if (e.key === 's' || e.key === 'ArrowDown') player.down = false;
-// });
-
-//initializeWebSocket();
+window.addEventListener("resize", () => {
+	console.log("player canvas width: " + player.canvas.width);
+	console.log("actual canvas width: " + canvas.width);
+});
 
 export function startGame()
 {
-	canvas = document.getElementById('gameCanvas');
+	canvas = document.getElementById('newGameCanvas');
 	ctx = canvas.getContext('2d');
 	ball = new Ball(canvas);
 	targetBallX = ball.x;

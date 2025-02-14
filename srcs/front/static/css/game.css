@@ -1,5 +1,20 @@
+/*#gameBoard {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 10%;
+	left: 10%;
+	width: 80%;
+	height: 80%;
+	background: #000;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+	border-radius: 12px;
+}
+*/
+
 .gameStatus {
-	background-color: rgba(74, 72, 72, 0.8); /* Fondo ligeramente transparente */
+	background-color: rgba(74, 72, 72, 0.8);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
@@ -11,12 +26,14 @@
 }
 
 .gameStatus h1 {
-    font-size: calc(2vw + 1rem);  /* Base size + scale with screen */
+    font-size: calc(2vw + 1rem);
 }
 
 canvas {
+	display: block;
 	width: 100%;
 	height: 100%;
+	image-rendering: pixelated; /* Prevent blurry rendering on scale */
 }
 
 .form-column {
@@ -45,3 +62,18 @@ canvas {
     border-radius: 5px;
     border: 1px solid #ccc;
 }
+
+.difficulty-btn {
+    padding: 10px 15px;
+    margin: 5px;
+    border: 2px solid #ccc;
+    background-color: #f8f8f8;
+    cursor: pointer;
+}
+
+.difficulty-btn.active {
+    border-color: #9c74ba;
+    background-color: #c2a8e1;
+    color: white;
+}
+

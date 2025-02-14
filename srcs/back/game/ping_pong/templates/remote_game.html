@@ -1,0 +1,13 @@
+<div id="game-container">
+    <div class="gameStatus">
+        <h1>{{ game_title }}</h1> <!-- Game title dynamically rendered from the context -->
+
+        <div id="newGameBoard">
+            <canvas id="newGameCanvas" width="1200" height="600" style="display: flex;"></canvas> <!-- Game playfield --> 
+            <div id="gameStatus">
+				<p>{{ waiting_message }}</p>
+			</div>
+        </div>
+        <button id="play-again" data-route="/play-remote">{{ restart }}</button>
+    </div>
+</div>

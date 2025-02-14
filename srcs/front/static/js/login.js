@@ -54,7 +54,7 @@ export const makeAuthenticatedRequest = (url, options = {}) => {
         // return Promise.reject("No access token.");
         navigateTo('/login', true); // + maybe remove everything from local storage? or just handleLogout?
     }
-
+    console.log(url);
     options = {
         ...options,
         headers: {
@@ -73,7 +73,8 @@ export const makeAuthenticatedRequest = (url, options = {}) => {
                 return fetch(url, options); //retry the original request
             });
         } else {
-          return response; // means that response is valid
+            console.log(url);
+            return response; // means that response is valid
         }
     });
 };

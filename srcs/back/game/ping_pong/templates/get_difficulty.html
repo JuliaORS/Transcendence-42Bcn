@@ -1,0 +1,17 @@
+<div>
+    <form id="play-ai-form" class="form-column">
+        <label for="difficulty-level">
+            Choose Difficulty Level:
+        </label>
+        <div id="difficulty-options">
+            <button type="button" class="difficulty-btn" data-value="0.5" >Very Easy</button>
+            <button type="button" class="difficulty-btn" data-value="1" >Easy</button>
+            <button type="button" class="difficulty-btn" data-value="3" >Medium</button>
+            <button type="button" class="difficulty-btn" data-value="5" >Hard</button>
+        </div>
+        <input type="hidden" id="difficulty-level" name="difficulty-level" required>
+        <button id="start-game-btn" data-route="/play-ai/game">
+            START
+        </button>
+    </form>
+</div>

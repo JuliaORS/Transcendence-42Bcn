@@ -1,13 +1,21 @@
 export class Player {
 
-    width = 10;
-	height = 80;
+    // width = 10;
+	// height = 80;
 	// maxScore = 2;
 
-    constructor(canvas, role, name, initPos = (canvas.width - this.width)) {
-        this.width = 10;
-        this.height = 80;
-        this.x = initPos;
+    constructor(canvas, role, name) {
+        this.width = canvas.width * 0.01;
+        this.height = canvas.height * 0.2;
+        // this.width = 10;
+        // this.height = 80;
+        // initPos = 
+        if (!role) {
+            this.x = 0
+        } else {
+            this.x = canvas.width - this.width;
+        }
+        console.log(`player width: ${this.x}`)
         this.y = canvas.height / 2 - this.height / 2;
         this.speed = 5;
         this.color = "white";
@@ -62,7 +70,7 @@ export class Player {
 }
 
 export class Ball {
-    radius = 10;
+    // radius = 10;
 
     constructor(canvas) {
         this.x = canvas.width / 2;
@@ -71,6 +79,7 @@ export class Ball {
         this.yspeed = 5;
         this.color = "white";
         this.canvas = canvas;
+        this.radius = canvas.width * 0.015;
     }
 
     draw(ctx) {

@@ -1,24 +1,32 @@
 export class Player {
-	width = 10;
-	height = 80;
 	maxScore = 5;
+	wFactor = 0.03;
+	hFactor = 0.1;
+	sFactor = 0.02;
 
-	constructor(canvas, role, initPos = (canvas.width - this.width)) {
-		console.log(`Canvas size: ${canvas.width} x ${canvas.hight}`)
-		this.x = initPos;
+	constructor(canvas, role) {
+		console.log(`Canvas size: ${canvas.width} x ${canvas.height}`)
+		this.width = canvas.width * 0.01;
+		this.height = canvas.height * 0.2;
+		if (role === "player1")
+			this.x = 0;
+		else
+			this.x = canvas.width - this.width;
 		this.y = canvas.height / 2 - this.height / 2;
-		this.speed = 5;
+		this.speed = canvas.height * this.sFactor; // Speed scales with canvas height
 		this.color = "white";
 		this.up = false;
 		this.down = false;
 		this.score = 0;
-		this.canvas.width = canvas;
-		this.role = role;
+		this.role = role; // "player1" or "player2"
+		this.canvas = canvas;
 	}
  
 	draw(ctx) {
 		ctx.fillStyle = this.color;
 		ctx.fillRect(this.x, this.y, this.width, this.height);
+		//if (this.role === "player1")
+		//	console.log("paddles: x " + this.x + "\ny: " + this.y + "\nwidth: " + this.width + "\nheight: " + this.height);
 	}
 
 	move(socket) {
@@ -76,22 +84,36 @@ export class Player {
 			socket.send(JSON.stringify(data));
 		}
 	}
+	resize(canvas, wScale, hScale)
+	{
+		this.width = canvas.width * this.wFactor;
+		this.height = canvas.height * this.hFactor;
+		if (this.role == "player2")
+			this.x = canvas.width - canvas.width * 0.01
+		this.x *= wScale;
+		this.y *= hScale;
+		this.speed = canvas.height * this.sFactor;
+		this.canvas = canvas;
+	}
 }
 
 
 export class Ball {
-	radius = 10;
+	radFactor = 0.01;
+	sFactor = 0.01;
 
 	constructor(canvas) {
+		this.canvas = canvas;
+		this.radius = canvas.width * this.radFactor; // Ball radius scales with canvas width
 		this.x = canvas.width / 2;
 		this.y = canvas.height / 2;
-		this.xspeed = 5;
-		this.yspeed = 5;
+		this.xspeed = canvas.width * 0.01; // Speed scales with canvas width
+		this.yspeed = canvas.height * 0.01; // Speed scales with canvas height
 		this.color = "white";
-		this.canvas = canvas;
 	}
 
 	draw(ctx) {
+		//console.log("ball x: " + this.x + " y: " + this.y + " rad: " + this.radius);
 		ctx.fillStyle = this.color;
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
@@ -159,5 +181,14 @@ export class Ball {
 			};
 			socket.send(JSON.stringify(data));
 		}
+	}
+	resize(canvas, wScale, hScale)
+	{
+		this.radius = canvas.width * this.radFactor;
+		this.x *= wScale;
+		this.y *= hScale;
+		this.xspeed *= wScale;
+		this.yspeed *= hScale;
+		this.canvas = canvas;
 	}
 }

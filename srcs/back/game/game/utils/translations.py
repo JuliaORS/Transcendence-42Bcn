@@ -99,4 +99,10 @@ def get_lang_words(lang):
             'quit': "Quit",
             'play': "Play",
             'ranking': "Ranking",
-        }
+			'play again': "Play again",
+			'back': "Back",
+			'logout': "Logout",
+			'waiting_message': "Waiting for player...",
+			'game_title': "CRRRRAAAZZZY PONG!",
+			'restart': "Restart",
+		}

@@ -73,17 +73,17 @@ function gameLocalLoop() {
 }
 
 // Event listeners for player controls
-export function setupControls() {
+export function setupControls(player1, player2) {
     window.addEventListener("keydown", (e) => {
-        if (e.key === "w") player1.up = true;
-        if (e.key === "s") player1.down = true;
+        if (e.key === "w" || e.key === "W") player1.up = true;
+        if (e.key === "s" || e.key === "S") player1.down = true;
         if (e.key === "ArrowUp") player2.up = true;
         if (e.key === "ArrowDown") player2.down = true;
     });
 
     window.addEventListener("keyup", (e) => {
-        if (e.key === "w") player1.up = false;
-        if (e.key === "s") player1.down = false;
+        if (e.key === "w" || e.key === "W") player1.up = false;
+        if (e.key === "s" || e.key === "S") player1.down = false;
         if (e.key === "ArrowUp") player2.up = false;
         if (e.key === "ArrowDown") player2.down = false;
     });
@@ -102,10 +102,10 @@ export function startLocalGame(playerName1, playerName2, mainUserNmb) {
     // Initialize players and ball
     console.log('Starting local game...');
     console.log(`Canvas: ${canvas.width} x ${canvas.height}`);
-    player1 = new Player(canvas, 0, playerName1, 0);
-    player2 = new Player(canvas, 1, playerName2, canvas.width - 10);
+    player1 = new Player(canvas, 0, playerName1);
+    player2 = new Player(canvas, 1, playerName2);
     ball = new Ball(canvas);
 
-    setupControls();
+    setupControls(player1, player2);
     gameLocalLoop();
 }

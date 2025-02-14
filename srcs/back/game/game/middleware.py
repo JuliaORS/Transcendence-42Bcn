@@ -10,7 +10,6 @@ from rest_framework.exceptions import AuthenticationFailed
 
 logger = logging.getLogger(__name__)
 
-
 # Fetch user from database using sync-to-async
 async def get_user_from_token(username):
     from django.contrib.auth import get_user_model

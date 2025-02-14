@@ -33,9 +33,10 @@ const routes = {
     '/logout': handleLogout,
     '/settings': loadProfileSettingsPage,
     '/play-local': playLocal,
-    '/play-ai': playAI,
+    '/play-ai': (args) => playAI(args),
     '/play-online': playOnline,
     '/play-local/game': gameLocal,
+    '/play-ai/game': (args) => gameAI(args),
     '/tournament': loadTournamentHomePage,
     '/create-tournament': handleCreateTournament,
     '/join-tournament-page': loadJoinTournamentPage,
@@ -85,16 +86,22 @@ function router(args=null) {
 // Additionally, a historyTracker array is maintained for debugging, which logs every navigation event 
 // (pushState or replaceState).
 
-export function navigateTo(path, replace = false, args=null) {
-    console.log(`navigating to ${path}`)
+export function navigateTo(path, replace = false, args = null) {
+    console.log(`navigating to ${path} with args: `, args)
+
+    // // Extract query params
+    // const [cleanPath, queryString] = path.split("?");
+    // const args = Object.fromEntries(new URLSearchParams(queryString));
+
+
     if (replace) {
-        history.replaceState({ path }, null, path);
+        history.replaceState({ path, args }, null, path);
         historyTracker.push({ action: 'replaceState', path });
         console.log(`${path} is replaced in history`)
     }
     else {
 
-        history.pushState({ path }, null, path);
+        history.pushState({ path, args }, null, path);
         historyTracker.push({ action: 'pushState', path });
         console.log(`${path} is pushed to history`)
     }
@@ -165,9 +172,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 event.preventDefault();
             }
 
-            const shouldModifyURL = !target.hasAttribute('not-modify-url');
+            // Extract arguments from `data-args` (if present)
+            const args = target.hasAttribute("data-args")
+                ? JSON.parse(target.getAttribute("data-args"))
+                : null;
+            console.log("Extracted args:", args);
 
-            navigateTo(route, shouldModifyURL);
+            navigateTo(route, false, args);
         }
     });
 

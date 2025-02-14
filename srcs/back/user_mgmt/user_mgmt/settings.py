@@ -30,6 +30,8 @@ SECRET_KEY = 'django-insecure-^)=g1^6d1@)ddwk@+k*jnjh$63+j%m3!zng%yex8x*f7qi_&w6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#ALLOWED_HOSTS = ['localhost', 'transcendence', 'user_mgmt'] 
+
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'user_mgmt', 'user_mgmt:8000'] #rarete tambien
 ALLOWED_HOSTS = ['*']
 
@@ -127,6 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 8},
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',

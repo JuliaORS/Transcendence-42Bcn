@@ -198,7 +198,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Restricts access to authenticated users
+        'rest_framework.permissions.IsAuthenticated',  # Restricts access to authenticated users
     ],
 }
 

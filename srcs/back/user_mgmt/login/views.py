@@ -21,6 +21,9 @@ from user_profile.models import Profile
 from .twoFA import TwoFA  
 import base64
 from datetime import datetime, timedelta
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.conf import settings
 from user_mgmt.utils.translations import add_language_context
 
 def generate_jwt_tokens(user):
@@ -174,13 +177,20 @@ def register_user(request):
         if User.objects.filter(email=email).exists():
             return JsonResponse({"error": "Email already registered."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # maybe to check also for invalid characters in username?
+        # UNCOMMENT FOR STRONG PASSWORD CHECK:
+        # temp_user = User(username=username, email=email, first_name=name)
+
+        # try:
+        #     validate_password(password, user=temp_user)
+        # except ValidationError as e:
+        #     print(e.messages)
+        #     return JsonResponse({"error": " ".join(e.messages)}, status=status.HTTP_400_BAD_REQUEST)
 
         user = User.objects.create(
             username=username,
             first_name=name,
             email=email,
-            password=make_password(password) # to hash it (? if its not done automatically ?)
+            password=make_password(password) 
         )
 
         # return JsonResponse({"message": "User registered successfully!", "user_id": user.id}, status=status.HTTP_201_CREATED)

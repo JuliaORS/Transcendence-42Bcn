@@ -40,24 +40,28 @@ def user_info_api(request):
     else:
         return JsonResponse({'error': 'user not authenticated'}, status=401)
 
-def player_game_statistics(player_id):
+def player_game_statistics(request, player_id):
     game_service_url = 'http://game:8001'
     endpoint = f'{game_service_url}/api/player/{player_id}/game_statistics/'
 
+    auth_header = request.headers.get('Authorization')
+    headers = {"Authorization": auth_header}
     try:
-        response = requests.get(endpoint)
+        response = requests.get(endpoint, headers=headers)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
         print(f"Error fetching statistics: {e}")
         return {'games_played': 0, 'games_won': 0}
 
-def player_tournament_statistics(player_id):
+def player_tournament_statistics(request, player_id):
     game_service_url = 'http://game:8001'
     endpoint = f'{game_service_url}/api/player/{player_id}/tournament_statistics/'
 
+    auth_header = request.headers.get('Authorization')
+    headers = {"Authorization": auth_header}
     try:
-        response = requests.get(endpoint)
+        response = requests.get(endpoint, headers=headers)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
@@ -72,8 +76,10 @@ def player_last_ten_games(request):
         game_service_url = 'http://game:8001'
         endpoint = f'{game_service_url}/api/player/{player_id}/last_ten_games'
 
+        auth_header = request.headers.get('Authorization')
+        headers = {"Authorization": auth_header}
         try:
-            response = requests.get(endpoint)
+            response = requests.get(endpoint, headers=headers)
             response.raise_for_status()
             game_data = response.json()
             return JsonResponse({
@@ -85,12 +91,14 @@ def player_last_ten_games(request):
     else:
         return JsonResponse({'error': 'User not authenticated.'}, status=401)
 
-def player_all_games(player_id):
+def player_all_games(request, player_id):
     game_service_url = 'http://game:8001'
     endpoint = f'{game_service_url}/api/player/{player_id}/all_games/'
 
+    auth_header = request.headers.get('Authorization')
+    headers = {"Authorization": auth_header}
     try:
-        response = requests.get(endpoint)
+        response = requests.get(endpoint, headers=headers)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
@@ -102,7 +110,7 @@ def match_history_page(request):
     print("In match history api: ", request.user)
     if request.user.is_authenticated:
         user_id = request.user.id
-        all_games = player_all_games(user_id)
+        all_games = player_all_games(request, user_id)
         context = {
             'match_history': all_games,
         }
@@ -120,8 +128,10 @@ def profile_page(request):
         user_id = user.id
         photo_url = None
 
-        stats_games = player_game_statistics(user_id)
-        stats_tournaments = player_tournament_statistics(user_id)
+        print("!!!in profile page back")
+        stats_games = player_game_statistics(request, user_id)
+        print("!!! game stats: ", stats_games)
+        stats_tournaments = player_tournament_statistics(request, user_id)
 
         if hasattr(user, 'profile'):
             photo_url = get_photo_url(user)
