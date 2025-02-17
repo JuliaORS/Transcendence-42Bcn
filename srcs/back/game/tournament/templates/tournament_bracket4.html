@@ -8,7 +8,7 @@
 
     <section id="bracket" class="row justify-content-center bracket" style="position: relative;">
         <!-- First Round -->
-        <div class="round round-one">
+        <!-- <div class="round round-one">
 			<ul class="matchup">
 				<li class="team team-top">user1</li>
 				<li class="team team-bottom">user2</li>
@@ -17,14 +17,49 @@
 				<li class="team team-top">user3</li>
 				<li class="team team-bottom">user4</li>
 			</ul>
-        </div>
+        </div> -->
 
         <!-- Second Round -->
-        <div class="round round-two">
+        <!-- <div class="round round-two">
 			<ul class="matchup">
 				<li class="team team-top">winner1</li>
 				<li class="team team-bottom">winner2</li>
 			</ul> 
+        </div> -->
+
+        <!-- First Round -->
+        <div class="round round-one">
+            {% for pair in pairs.0 %}
+            <ul class="matchup">
+                <li class="team team-top">{{ pair.0 }}</li>
+                <li class="team team-bottom">{{ pair.1 }}</li>
+            </ul>
+            {% endfor %}
+            <!-- for testing -->
+            {% if total_cnt|add:0 < 3 %}
+            <ul class="matchup">
+                <li class="team team-top">user3</li>
+                <li class="team team-bottom">user4</li>
+            </ul>
+            {% endif %}
+        </div>
+
+        <!-- Second Round -->
+        <div class="round round-two">
+            {% if cur_round == 1 %}
+            <ul class="matchup">
+                <li class="team team-top">winner1</li>
+                <li class="team team-bottom">winner2</li>
+            </ul> 
+            {% else %}
+            <!-- If second round has started, show winners -->
+            {% for pair in pairs.1 %}
+            <ul class="matchup">
+                <li class="team team-top">{{ pair.0 }}</li>
+                <li class="team team-bottom">{{ pair.1 }}</li>
+            </ul>
+            {% endfor %}
+            {% endif %}
         </div>
     </section>
 </div>

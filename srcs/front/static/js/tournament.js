@@ -89,7 +89,7 @@ export const loadFinalTournamentPage = () => {
 	}
 };
 
-export const saveTournamentGameResult = (tournamentId, winner, looser) => {
+export const saveTournamentGameResult = (tournamentId, winner, loser) => {
     const button = document.getElementById('play-again');
     if (button) {
         button.textContent = "Back to Tournament Page";
@@ -102,8 +102,8 @@ export const saveTournamentGameResult = (tournamentId, winner, looser) => {
             "type": "game_result",
             "winner": winner,
             "winner_score": 2, // change
-            "looser": looser,
-            "looser_score": 0, // change
+            "loser": loser,
+            "loser_score": 0, // change
         };
         socket.send(JSON.stringify(data));
     }
@@ -233,7 +233,7 @@ function getTournamentId() {
 
 function getNumberOfPlayers() {
     const nPlayers = document.getElementById('tournament-count').value;
-    const validPlayers = ["3", "4", "7", "8"];
+    const validPlayers = ["3", "4", "7", "8", "1", "2"];
     
     if (!validPlayers.includes(nPlayers)) {
         alert("Incorrect number of players");

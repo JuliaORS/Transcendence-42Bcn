@@ -161,7 +161,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 					await self.send(text_data=json.dumps({
 						"type": "html",
 						"html": page['html'],
-						"status": "playing",
+						"status": page['status'],
 					}))
 				elif dtype == "waiting_room_page_request":
 					page = tournament.get_waiting_room_page()
@@ -179,8 +179,26 @@ class PongConsumer(AsyncWebsocketConsumer):
 						"status": "finished",
 					}))
 
-				# elif dtype == "game_result":
-				# 	# save results
+				elif dtype == "game_result":
+					status = tournament.save_game_result(data)
+					if status == "new":
+						await self.channel_layer.group_send(
+								self.tour_id,
+								{
+									"type": "tournament_starts",
+									"message": "New round has started",
+									"status": "playing",
+								}
+							)
+					elif status == "finished":
+						await self.channel_layer.group_send(
+								self.tour_id,
+								{
+									"type": "tournament_ends",
+									"message": "Tournament has finished",
+									"status": "finished",
+								}
+							)
 
 			except Exception as e:
 				logger.error(f"\033[1;31mError receiving a message via WebSocket: {e}")
