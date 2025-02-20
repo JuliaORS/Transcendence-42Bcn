@@ -202,6 +202,10 @@ class PongConsumer(AsyncWebsocketConsumer):
 									"status": "finished",
 								}
 							)
+				
+				elif dtype == "quit":
+					logger.info("player wants to quit the tournament")
+					await tournament.handle_quit(self.user.username)
 
 			except Exception as e:
 				logger.error(f"\033[1;31mError receiving a message via WebSocket: {e}")

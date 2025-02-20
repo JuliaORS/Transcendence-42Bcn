@@ -244,6 +244,19 @@ class TournamentManager:
 		except Exception as e:
 			logger.info(f"Error saving tournament result: {e}")
 
+	async def handle_quit(self, username):
+		logger.info(f"{username} wants to quit!!!")
+		if self.round == 0:
+			logger.info("tournament has not started")
+			# we need to delete from players and users
+		else:
+			logger.info("tournament has started")
+			# check if has finished game in cur round
+			# if yes, remove from players 
+			# if not, save a game as loser for him and opponent as winner, check if tourn finish
+			# save his score in tournament table
+		# close connection?
+
 	def get_user(self, name):
 		User = get_user_model()
 		if (name == "@AI"):

@@ -89,6 +89,21 @@ export const loadFinalTournamentPage = () => {
 	}
 };
 
+export const quitTournament = () => {
+    console.log("QUIT button clicked")
+    if (socket.readyState === WebSocket.OPEN)
+        {
+            const data = {
+                "type": "quit",
+                // "winner": winner,
+                // "winner_score": playerScore > AIScore ? playerScore : AIScore,
+                // "loser": loser,
+                // "loser_score": playerScore > AIScore ? AIScore : playerScore,
+            };
+            socket.send(JSON.stringify(data));
+        }
+}
+
 export const saveTournamentGameResult = (winner, loser, playerScore, AIScore) => {
     const button = document.getElementById('play-again');
     if (button) {
