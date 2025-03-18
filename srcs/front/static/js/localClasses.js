@@ -8,7 +8,7 @@ export class Player {
         } else {
             this.x = canvas.width - this.width;
         }
-        console.log(`player width: ${this.x}`)
+        // console.log(`player width: ${this.x}`)
         this.y = canvas.height / 2 - this.height / 2;
         this.speed = canvas.height * 0.01;
         this.color = "white";   

@@ -79,7 +79,7 @@ class TournamentManager:
 	
 	def increase_round(self):
 		self.round = self.round + 1
-		logger.info(f"NEW ROUND: {self.round}")
+		#logger.info(f"NEW ROUND: {self.round}")
 		self.create_pairs()
 		n = len(self.pairs[self.round - 1])
 		self.matches_started.clear()
@@ -131,7 +131,7 @@ class TournamentManager:
 			'cur_round': self.round,
 			'total_cnt': self.max_user_cnt,
 		}
-		logger.info(f"round:: {self.round}")
+		#logger.info(f"round:: {self.round}")
 		add_language_context({'language': lang}, context)
 		html = render_to_string('tournament_bracket4.html', context)
 
@@ -430,7 +430,7 @@ class TournamentManager:
 				else:
 					cur_winners.append([False, False])
 			bool_winners.append(cur_winners)
-		logger.info(f"bool_winners: {bool_winners}")
+		#logger.info(f"bool_winners: {bool_winners}")
 		return bool_winners
 
 	def get_pairs_and_winners(self, pairs):
@@ -449,7 +449,7 @@ class TournamentManager:
 			pair = cur_pairs[i]
 			if pair[0] == username or pair[1] == username:
 				self.matches_started[i] = True
-				logger.info(f"NOW MATCHES: {self.matches_started}")
+				#logger.info(f"NOW MATCHES: {self.matches_started}")
 				return
 	
 	async def check_unstarted_games(self):
@@ -478,7 +478,7 @@ class TournamentManager:
 		# self.users.remove(pair[1])
 		status = await self.handle_game_end({}, True)
 		channel_layer = get_channel_layer()
-		logger.info(f"Sending group message, STATUS: {status}")
+		#logger.info(f"Sending group message, STATUS: {status}")
 		if status == "new":
 			tournament.increase_round()
 			await channel_layer.group_send(
@@ -507,7 +507,7 @@ class TournamentManager:
 					"status": "playing",
 				}
 			)
-		logger.info("Message sent to group successfully")
+		#logger.info("Message sent to group successfully")
 
 	def get_match_idx(self, us1, us2):
 		if self.round == 0:
@@ -542,7 +542,7 @@ class TournamentManager:
 
 	async def start_countdown_until_close(self):
 		await asyncio.sleep(20) #changeeeeeeeee??????????????????
-		logger.info("TIME TO DELETE")
+		#logger.info("TIME TO DELETE")
 		channel_layer = get_channel_layer()
 		await channel_layer.group_send(
 			self.id,

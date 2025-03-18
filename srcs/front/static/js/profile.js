@@ -169,17 +169,16 @@ export const loadMatchHistoryPage = () => {
                 if (data && data.match_history_html) {
                     document.getElementById('content-area').innerHTML = data.match_history_html;
                 } else {
-                    console.log('Error fetching settings:', data.error);
+                    // console.log('Error fetching settings:', data.error);
                 }
             })
             .catch(error => {
-                console.log('Error fetching settings:', error);
+                // console.log('Error fetching settings:', error);
             });
         })
 }
 
 const applyFilters = () => {
-    console.log('applying filters...');
     const dateFilter = document.getElementById('filter-date').value;
     const winnerFilter = document.getElementById('filter-winner').value.toLowerCase();
     const tournamentFilter = document.getElementById('filter-tournament').value.toLowerCase();
@@ -215,22 +214,18 @@ export const loadProfileSettingsPage = () => {
         .then(data => {
             if (data && data.profile_settings_html) {
                 document.getElementById('content-area').innerHTML = data.profile_settings_html;
-                // if (msg) {
-                //     displayUpdatingMessage(msg, 'green');
-                // }
             } else {
-                console.log('Error fetching settings:', data.error);
+                // console.log('Error fetching settings:', data.error);
             }
         })
         .catch(error => {
-            console.log('Error fetching settings:', error);
+            // console.log('Error fetching settings:', error);
         });
     })
 };
 
 export const loadProfilePage = async () => {
     const dictionary = await getDictFor3DGame();
-    console.log('Loading profile page..');
     drawHeader('main').then(() => {
     return makeAuthenticatedRequest(baseUrl + userMgmtPort + "/api/profile-page/", {
         method: "GET",
@@ -241,29 +236,26 @@ export const loadProfilePage = async () => {
         if (response.ok) {
             return response.json();
         } else {
-            console.log("Failed to load user info");
+            // console.log("Failed to load user info");
         }
     })
     .then((data) => {
         if (data && data.profile_html) {
             document.getElementById('content-area').innerHTML = data.profile_html;
             // addLogoutListener();
-            console.log('Profile page loaded');
             fetchLastTenGames().then((gamesData) => {
                 if (gamesData) {
                     const { username, games } = gamesData;
                     fillLastTenGamesChart(games, username, dictionary);
                 }
             });
-            console.log('Statistics graph rendered');
         }
     })
-    .catch((error) => console.log("Error loading user info:", error));
+    .catch((error) => {});
 };
 
 const updateProfileSettings = (form) => {
     const formData = new FormData(form);
-    console.log(formData);
     makeAuthenticatedRequest(baseUrl + userMgmtPort + "/api/update-profile-settings/", {
         method: "POST",
         body: formData,
@@ -278,7 +270,7 @@ const updateProfileSettings = (form) => {
             }
         })
         .catch((error) => {
-            console.log("Error updating settings: ", error);
+            // console.log("Error updating settings: ", error);
         });
 };
 

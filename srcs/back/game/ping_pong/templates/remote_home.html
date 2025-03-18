@@ -3,12 +3,12 @@
     <div class="game-wrapper">
       <!-- Sección para crear torneo -->
       <div id="create-game-form" class="section section-create">
-        <div class="section section-header" style="flex: 0;">
+        <div class="section section-header" style="top: 37px; position: relative;">
           <h2>{{ create_room }}</h2>
         </div>
         <!-- <div class="d-flex flex-column gap-3 mb-4"> -->
         <!-- </div> -->
-        <button class="button-trn" id="create-online" replace-url="/play-online" style="margin-top: 27%;">
+        <button class="button-trn" id="create-online" replace-url="/play-online" style="margin-top: 18%;">
           <span class="button-content-trn">{{ create }}</span>
         </button>
       </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="d-flex flex-column gap-3 mb-4">
           <label for="game-id-input" class="form-label text-center" style="color: #151515">{{ enter_id }}</label>
-          <input type="text" required id="game-id-input" class="form-control" placeholder="Enter ID">
+          <input type="text" required id="game-id-input" class="form-control" placeholder={{enter_id}}>
         </div>
         <button class="button-trn" id="join-online" replace-url="/play-online" style="margin-top: 3%;">
           <span class="button-content-trn">{{ join }}</span>

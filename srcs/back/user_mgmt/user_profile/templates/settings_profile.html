@@ -12,8 +12,14 @@
         <div class="col-md-8 offset-md-2">
           <form method="POST" enctype="multipart/form-data" id="profile-settings-form">
             <div class="mb-3">
+              <!-- <label for="photo" class="form-label">{{new_photo}}</label>
+              <input type="file" id="photo" name="photo" class="form-control"> -->
               <label for="photo" class="form-label">{{new_photo}}</label>
-              <input type="file" id="photo" name="photo" class="form-control">
+              <div class="custom-file-upload form-control">
+                <label for="photo">{{select_file}}</label>
+                <span id="file-name"></span>
+                <input type="file" id="photo" name="photo" class="form-control">
+              </div>
             </div>
             <div class="mb-3">
               <label for="username" class="form-label">{{username}}</label>

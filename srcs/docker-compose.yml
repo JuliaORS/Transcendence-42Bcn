@@ -33,8 +33,8 @@ services:
       - trs_net
     restart: always
     volumes:
-      - user-mgmt:/usr/src/app
-      - certs:/usr/src/app/certs
+      - ./back/user_mgmt:/usr/src/app
+      - ./.certs:/usr/src/app/certs
     ports:
       - "${USER_MGMT_PORT}:${USER_MGMT_PORT}"
 
@@ -52,8 +52,8 @@ services:
        - trs_net
     restart: always
     volumes:
-      - game:/usr/src/app
-      - certs:/usr/src/app/certs
+      - ./back/game:/usr/src/app
+      - ./.certs:/usr/src/app/certs
     ports:
       - "${GAME_PORT}:${GAME_PORT}"
     logging:
@@ -86,7 +86,7 @@ services:
       - .env
     volumes:
       - ./front/static:/usr/share/nginx/html/static
-      - certs:/usr/app/certs
+      - ./.certs:/usr/app/certs
 
 volumes:
   db_data:
@@ -94,27 +94,6 @@ volumes:
     driver_opts:
       type: none
       device: ./postgres
-
-  user-mgmt:
-    driver: local
-    driver_opts:
-      type: none
-      device: ./back/user_mgmt
-      o: bind
-      
-  game:
-    driver: local
-    driver_opts:
-      type: none
-      device: ./back/game
-      o: bind
-  
-  certs:
-    driver: local
-    driver_opts:
-      type: none
-      device: ./certs
-      o: bind
 
 networks:
   trs_net:

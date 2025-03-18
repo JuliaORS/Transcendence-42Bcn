@@ -137,7 +137,6 @@ export class Ball extends BasicBall {
         const dz = this.limits.y - this.radius - Math.abs(this.mesh.position.z)
 
         if (dx <= 0) {
-            // console.log('X hit!!');
             tPos.x = (this.limits.x - this.radius + dx) * Math.sign(this.mesh.position.x)
             this.velocity.x *= -1;
         }

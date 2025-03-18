@@ -255,7 +255,7 @@ async function initializeWebSocket(roomId, isCreator) {
 	const access_token = localStorage.getItem("access_token");
 	const token = await checkToken(access_token);
     if (!token) {
-        console.log("Remote Game No access token found");
+        // console.log("Remote Game No access token found");
         return ;
     }
 	//// CHECK ALL
@@ -282,7 +282,7 @@ async function initializeWebSocket(roomId, isCreator) {
 			  // Reconnect with the new token
 				initializeWebSocket();
 			} catch (err) {
-				console.log("Failed to refresh token", err);
+				// console.log("Failed to refresh token", err);
 				cleanRemote();
 				return ;
 			}

@@ -1,0 +1,129 @@
+/* #final-tournament-page-container {
+    min-height: 80vh;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 40px;
+    border: 3px solid #8a76d0cc;
+    background: linear-gradient(#1a1a1ae0, #212121e0) padding-box;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .winner-info-box {
+    border: 5px solid;
+    border-radius: 20px;
+    border-color: #5a36a3;
+    background-color: #f1f1f1c2;
+    color: #ffffff;
+    width: 100%;
+    height: 100px;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 8%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: -10%;
+  }
+
+  .results-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .list-group li {
+    background-color: #f1f1f1c2;
+    border: 2px solid #5a36a3;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    width: 75%;
+    align-self: center;
+  }
+
+  .results-list li:hover {
+    background-color: #e9ecef;
+  } */
+
+
+#final-tournament-page-container {
+  min-height: 80vh;
+  padding: 10px;
+  border-radius: 40px;
+  border: 3px solid #8a76d0cc;
+  background: linear-gradient(135deg, #1a1a1ae0, #2a2a2ae0);
+  box-shadow: 0 0 10px rgba(138, 118, 208, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.winner-info-box {
+  border: 5px solid;
+  border-radius: 20px;
+  border-color: #7c4dff;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(124, 77, 255, 0.6);
+  animation: glow 1.5s infinite alternate;
+  animation: fadeInZoom 1s ease-out;
+}
+
+@keyframes fadeInZoom {
+  0% {
+      opacity: 0;
+      transform: scale(0.8);
+  }
+  100% {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 10px rgba(177, 148, 255, 0.6); }
+  to { box-shadow: 0 0 20px rgb(90, 30, 254); }
+}
+
+.text-glow {
+  text-shadow: 0 0 10px #fff, 0 0 20px #7c4dff, 0 0 30px #7c4dff;
+}
+
+.glass-effect {
+  /* background: rgba(255, 255, 255, 0.1); */
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 10px;
+  width: 60%;
+  max-width: 400px;
+}
+
+@keyframes glowEffect {
+  0% {
+      text-shadow: 0 0 5px #a855f7, 0 0 10px #a855f7, 0 0 15px #9333ea;
+      opacity: 1;
+  }
+  50% {
+      text-shadow: 0 0 15px #d946ef, 0 0 20px #c026d3, 0 0 25px #a21caf;
+      opacity: 0.5;
+  }
+  100% {
+      text-shadow: 0 0 5px #a855f7, 0 0 10px #a855f7, 0 0 15px #9333ea;
+      opacity: 1;
+  }
+}
+
+.winner-title, .winner-name {
+  color: #e1e1e1;
+  animation: glowEffect 2s infinite alternate ease-in-out;
+}

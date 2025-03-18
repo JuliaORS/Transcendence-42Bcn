@@ -113,7 +113,7 @@ export class SceneText {
                 // console.log("Font loaded");
                 resolve(font);  // Resolve with the loaded font
             }, undefined, (error) => {
-                console.error("Font loading failed", error);
+                // console.log("Font loading failed", error);
                 reject(error);  // Reject if there's an error
             });
         });

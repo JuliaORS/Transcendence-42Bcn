@@ -18,12 +18,12 @@ export function getUserPreferenceLanguageFromDB() {
         if (data && data.status === "success") {
             return data.language;
         } else {
-            console.log("Failed to fetch user language preference:", data.message);
+            // console.log("Failed to fetch user language preference:", data.message);
             return null;
         }
     })
     .catch((error) => {
-        console.log("Error fetching user language preference:", error);
+        // console.log("Error fetching user language preference:", error);
         return null;
     });
 }
@@ -44,7 +44,7 @@ function saveUserPreferenceLanguageToDB(lang) {
     .then(response => response ? response.json() : null)
     .then((data) => {
         if (!data || data.status !== "success") {
-            console.log('Failed to update language on the server.');
+            // console.log('Failed to update language on the server.');
         }
     })
 }
@@ -65,13 +65,11 @@ function updateLanguageButtonUI(lang) {
 export async function updateLanguage(lang) {
     let lang_is_defined = true; 
 
-    //STEP 1: Get user language preference when login (no lang passed as parameter)
     if (!lang){
         lang_is_defined = false;
         lang = await getUserPreferenceLanguageFromDB();
     }
 
-    //STEP 2: Set language cookies
     setCookie("language", lang);
 
     if (lang_is_defined && checkPermission()) {
@@ -79,7 +77,6 @@ export async function updateLanguage(lang) {
     }
     updateLanguageButtonUI(lang);
 
-    //STEP 5: Update page (Pending Dina code)
     if (lang_is_defined) {
         navigateTo(window.location.pathname, true);
     }
@@ -97,7 +94,6 @@ document.addEventListener("headerLoaded", () => {
 
             languageMenu.addEventListener("click", event => {
                 const lang = event.target.getAttribute("data-lang");
-                console.warn(lang);
                 if (lang) { 
                     updateLanguage(lang);
                 }

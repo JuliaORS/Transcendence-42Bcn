@@ -10,7 +10,7 @@ DC_RUN_GAME= run --rm game sh -c
 DC_RUN_USER= run --rm user-mgmt sh -c
 
 
-CERTS_DIR= ./srcs/certs/
+CERTS_DIR= ./srcs/.certs/
 ENV= ./srcs/.env
 CONF_DIR= ./srcs/conf/
 SECURE ?= false

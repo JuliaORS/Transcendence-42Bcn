@@ -10,7 +10,7 @@ const userMgmtPort = window.env.USER_MGMT_PORT;
 
 export const handleLogout = () => {
     const contentArea = document.getElementById("content-area");
-    console.log('Logging out..');
+    // console.log('Logging out..');
     const refreshToken = localStorage.getItem('refresh_token');
     // const accessToken = localStorage.getItem('access_token');
 
@@ -24,18 +24,18 @@ export const handleLogout = () => {
         })
         .then((response) => {
             if (response.ok) {
-                console.log('Backend logout successful');
+                // console.log('Backend logout successful');
             }
         })
         .catch((error) => {
-            console.log('Error logging out: ', error);
+            // console.log('Error logging out: ', error);
         });
     }
 
     disconnectTournamentWS();
     cleanupGames();
     disconnectWS()
-    console.log("WebSocket closed upon logout.");
+    // console.log("WebSocket closed upon logout.");
 
     localStorage.clear();
     // localStorage.removeItem('access_token');

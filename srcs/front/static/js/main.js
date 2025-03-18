@@ -108,12 +108,11 @@ export function drawHeader(headerType) {
                 document.getElementById('header-area').innerHTML = data.header_html;
                 document.dispatchEvent(new CustomEvent("headerLoaded"));
                 // console.log('header event active');
-            } else
-                console.log('Header not found in response:', data);
+            }
             resolve();
         })
         .catch(error => {
-            console.log('Error loading Header =(', error);
+            // console.log('Error loading Header =(', error);
             reject(error);
         });
     });
@@ -247,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let shouldRoute = true;
 
     window.addEventListener('popstate', (event) => {
-        console.log("Popstate triggered:", event);
+        // console.log("Popstate triggered:", event);
         // shouldRoute = false;
         // cleanup3D();       // Always clean up before routing
         // clearIntervalIDGame();
@@ -269,8 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // navigateTo('/waiting-room');
             router();
         }).catch((error) => {
-            console.log("Error connecting WebSocket:", error);
-            // Handle error, possibly redirect to another page or show an alert
+            // console.log("Error connecting WebSocket:", error);
         });
     } else if (tourReload) {
         localStorage.removeItem("tournamentReload");

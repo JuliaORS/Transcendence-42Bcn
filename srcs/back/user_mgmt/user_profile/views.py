@@ -136,8 +136,6 @@ def profile_page(request):
         user_id = user.id
         photo_url = None
 
-        print(user.username)
-        print("!!!in profile page back")
         stats_games = player_game_statistics(request, user_id)
         print("!!! game stats: ", stats_games)
         stats_tournaments = player_tournament_statistics(request, user_id)
@@ -239,9 +237,7 @@ def search_users(request):
         ]
     else:
         results = []
-    # for friend in friends if hasattr(friend.user, 'profile')
-    # print(friend.user.username)
-    # print(redis_client.exists(f"user:{friend.user.id}:online"))
+
     friend_list = [
         {
             'photo_url': get_photo_url(friend.user),
@@ -257,8 +253,6 @@ def search_users(request):
         'friends_list': friend_list,
         'query': query
     }
-    print(results)
-    # print(friends[1].username)
     add_language_context(request.COOKIES, context)
     search_users_html = render_to_string('search_users.html', context)
     return JsonResponse({'search_users_html': search_users_html}, content_type="application/json")
@@ -311,23 +305,9 @@ def get_user_pref_lang(request):
     lang = getattr(request.user.profile, 'language', 'EN')
     return JsonResponse({'status': 'success', 'language': lang})
 
-# def root_view(request):
-#     #print('------->entro root_view<-------')
-#     jwt_token = request.COOKIES.get('csrftoken')
-#     if jwt_token:
-#         print('there is a token')
-#         try:
-#             AccessToken(jwt_token) # throw exception if token is not valid
-#             return render(request, 'profile.html')
-#         except Exception as e:
-#             print(f"Token error: {e}") #invalid token or expired
-
-#     return render(request, 'login.html')
-
 @api_view(['GET'])
 @login_required 
 def home_page(request):
-    print('Home page api called')
     if request.user.is_authenticated:
         context = {
             'user': request.user,  # Pass the user object to the template
@@ -343,7 +323,6 @@ def home_page(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_main_header(request):
-    print('Main Header api called')
     context = {}
     add_language_context(request.COOKIES, context)
     header_html = render_to_string('main_header.html', context)
@@ -353,7 +332,6 @@ def get_main_header(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_languages_header(request):
-    print('Languages header api called')
     context = {}
     add_language_context(request.COOKIES, context)
     header_html = render_to_string('language_header.html', context)
@@ -362,7 +340,6 @@ def get_languages_header(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_3D_header(request):
-    print('3D header api called')
     context = {}
     add_language_context(request.COOKIES, context)
     header_html = render_to_string('3d_header.html', context)

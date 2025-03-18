@@ -163,18 +163,7 @@
   border: 1px solid #414141; /* Borde por defecto */
   border-color: #0d0d0d;
   transition: border-color 0.3s, background-color 0.3s;
-  /* width: 80%;
-  max-width: 350px;
-  margin: 0 auto; */
 }
-
-/* .form-label {
-  display: block;
-  width: 50%;
-  max-width: 300px;
-  margin: 0 auto 5px auto;
-  text-align: center;
-} */
 
 .form-control::placeholder {
   color: #cccccc; /* Color para el placeholder */
@@ -187,3 +176,22 @@
   color: #ffffff;
 }
 
+.custom-file-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.custom-file-upload label {
+    background-color: #5f45bf;
+    color: white;
+    padding: 1px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}

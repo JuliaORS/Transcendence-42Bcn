@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to handle route changes
     function router() {
         const path = window.location.pathname;
-        console.log("Current PATH:", path);
+        // console.log("Current PATH:", path);
         if (routes[path]) {
             routes[path]();
         } else {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Define components
     function showLogin() {
-        console.log("Rendering Login Page");
+        // console.log("Rendering Login Page");
 
         contentArea.innerHTML = `
             <div class="container">
@@ -46,12 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Ensure particle background is loaded
         loadParticleBackground()
-            .then(() => console.log("Particle background loaded successfully."))
-            .catch(err => console.error("Error loading particle background:", err));
+            .then(() => {})
+            .catch(() => {});
     }
 
     function showGame() {
-        console.log("Rendering Game Page");
+        // console.log("Rendering Game Page");
 
         contentArea.innerHTML = `
         <div id="gameBoard">
@@ -69,12 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
             loadScript('classes.js'),
             loadScript('pong.js'),
         ])
-            .then(() => console.log('Game scripts loaded successfully.'))
-            .catch(err => console.error('Error loading game scripts:', err));
+            .then(() => {})
+            .catch(() => {});
     }
 
     function showNotFound() {
-        console.log("Rendering 404 Page");
         contentArea.innerHTML = `
             <div>
                 <h1>404 - Page Not Found</h1>

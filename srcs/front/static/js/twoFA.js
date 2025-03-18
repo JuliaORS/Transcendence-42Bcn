@@ -36,11 +36,10 @@ export const loadLogin2FAPage = () => {
         .then(response => response.json())
         .then(data => {
             if (data.form_html) {
-                console.log('2FA form html returned!');
                 contentArea.innerHTML = data.form_html;
             }
         })
-        .catch(error => console.log('Error loading 2FA login form:', error));
+        .catch(error => {});
     })
 }
 
@@ -57,10 +56,10 @@ export const enable2FA = () => {
                 document.getElementById('content-area').innerHTML = data.setup_html;
                 document.getElementById("2fa-qr-code").src = `data:image/png;base64,${data.qr_code}`;
             } else {
-                console.log("Error while enabling 2FA.")
+                // console.log("Error while enabling 2FA.")
             }
         })
-        .catch((error) => console.log("Error enabling 2FA:", error));
+        .catch((error) => {});
 };
 
 export const disable2FA = () => {
@@ -71,13 +70,13 @@ export const disable2FA = () => {
         .then(response => response ? response.json() : null)
         .then((data) => {
             if (data && data.success) {
-                console.log("2FA has been disabled.");
+                // console.log("2FA has been disabled.");
                 navigateTo('/profile-settings', true);
             } else {
-                console.log("Error while disabling 2FA.");
+                // console.log("Error while disabling 2FA.");
             }
         })
-        .catch((error) => console.log("Error disabling 2FA:", error));
+        .catch((error) => {});
 };
 
 const  verify2FA = () => {
@@ -96,15 +95,13 @@ const  verify2FA = () => {
         .then(response => response ? response.json() : null)
         .then((data) => {
             if (data && data.success) {
-                console.log("2fa code CORRECT !!");
                 navigateTo('/profile-settings', true);
                 displayUpdatingMessage(data.message, 'green');
             } else {
-                console.log("Invalid or expired 2fa code.");
                 display2FAMessage('two-fa-form', data.error, 'red');
             }
         })
-        .catch((error) => console.log("Error verifying 2FA:", error));    
+        .catch((error) => {});    
 };
 
 const verify2FALogin = () => {
@@ -120,13 +117,12 @@ const verify2FALogin = () => {
     .then((response) => response.json())
     .then((data) => {
         if (data.success) {
-            console.log("2fa code CORRECT !!");
             localStorage.setItem('access_token', data.tokens.access);
             localStorage.setItem('refresh_token', data.tokens.refresh);
             localStorage.removeItem('temp_token');
             navigateTo('/home', true);
         } else {
-            console.log("Invalid or expired 2fa code.");
+            // console.log("Invalid or expired 2fa code.");
             display2FAMessage('two-fa-login-form', data.message, 'red');
         }
     })
