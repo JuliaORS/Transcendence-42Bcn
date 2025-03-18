@@ -276,7 +276,7 @@ def get_lang_words(lang):
 			'players': "Players",
 			'round': "Round",
 			'tournament_finished': "The tournament has finished",
-			'winner_is': "Победитель -",
+			'winner_is': "The winner is",
 			'start': "START !",
 			'try_again': "TRY AGAIN",
 			'ready': "READY ?",

@@ -60,7 +60,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 								self.tour_id,
 								{
 									"type": "new_player_cnt",
-									# "player_cnt": tournament.get_players_cnt(),
+									"player_cnt": tournament.get_players_cnt(),
 								}
 							)
 							await self.send(text_data=json.dumps({
