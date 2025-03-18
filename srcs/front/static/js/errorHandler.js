@@ -21,13 +21,13 @@ export const loadPageNotFound = async () => {
             if (contentArea) {
                 contentArea.innerHTML = data.page_not_found_html;
             } else {
-                // console.log('Content area not found');
+                console.error('Content area not found');
             }
         } else {
-            // console.log('Failed to load error page.');
+            console.error('Failed to load error page.');
         }
     } catch (error) {
-        // console.log('Error loading page', error);
+        console.error('Error loading page', error);
     }
 };
 

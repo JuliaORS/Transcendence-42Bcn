@@ -18,11 +18,11 @@ export const loadFriendsSearchPage = async () => {
                 if (data && data.search_users_html) {
                     document.getElementById('content-area').innerHTML = data.search_users_html;
                 } else {
-                    // console.log('Error fetching friends search:', data.error);
+                    console.error('Error fetching friends search:', data.error);
                 }
             })
             .catch(error => {
-                // console.log('Error fetching friends search:', error);
+                console.error('Error fetching friends search:', error);
             });
 
         })
@@ -31,7 +31,7 @@ export const loadFriendsSearchPage = async () => {
 const performSearch = () => {
     const searchInput = document.getElementById("search-input");
     const query = searchInput.value.trim();
-    // console.log('query:', query);
+    console.log('query:', query);
 
     if (query) {
         makeAuthenticatedRequest(baseUrl + userMgmtPort + "/api/search-users/?q=" + encodeURIComponent(query), {method: "GET"})
@@ -40,11 +40,11 @@ const performSearch = () => {
                 if (data && data.search_users_html) {
                     document.getElementById('content-area').innerHTML = data.search_users_html;
                 } else {
-                    // console.log('Error fetching friends search:', data.error);
+                    console.error('Error fetching friends search:', data.error);
                 }
             })
             .catch(error => {
-                // console.log('Error fetching friends search:', error);
+                console.error('Error fetching friends search:', error);
             });
     }
 };
@@ -54,6 +54,8 @@ const addFriend = (friendId) => {
         .then(response => response ? response.json() : null)
         .then(data => {
             if (data && data.status == "success") {
+                console.log('friend added!!');
+
                 const button = document.querySelector(`#add-friend-button[data-id="${friendId}"]`);
                 if (button) {
                     button.textContent = dict['remove_friend'] || 'Remove Friend';
@@ -89,10 +91,12 @@ const addFriend = (friendId) => {
                     </span>
                 `;
                 friendsSection.appendChild(newFriendItem);
+            } else {
+                console.log('error while adding friend :(');
             }
         })
         .catch(error => {
-            // console.log('Error adding friend:', error.message || error);
+            console.error('Error adding friend:', error.message || error);
         });
 };
 
@@ -101,6 +105,8 @@ const removeFriend = (friendId) => {
         .then(response => response ? response.json() : null)
         .then(data => {
             if (data && data.status == "success") {
+                console.log('friend removed!!');
+
                 const button = document.querySelector(`#remove-friend-button[data-id="${friendId}"]`);
                 if (button) {
                     button.textContent = dict['add_friend'] || 'Add Friend';
@@ -113,10 +119,12 @@ const removeFriend = (friendId) => {
                 if (friendItem) {
                     friendItem.remove();
                 }
+            } else {
+                console.log('error while removing friend :(' + data.message);
             }
         })
         .catch(error => {
-            // console.log('Error removing friend:', error.message || error);
+            console.error('Error removing friend:', error.message || error);
         });
 };
 

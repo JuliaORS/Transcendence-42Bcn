@@ -168,19 +168,14 @@ class GameManager:
 		padH = GameManager.paddle_config["height"] / 2
 		pl1 = self.players["player1"]["y"] * boardH
 		pl2 = self.players["player2"]["y"] * boardH
-		#Left paddle
 		if self.ball["x"] * boardW - radius <= GameManager.paddle_config["width"]:
 			if ((self.ball["y"] * boardH <= pl1 + padH + 1) and
 				(self.ball["y"] * boardH >= pl1 - padH - 1)):
-				logger.info(f"Side col, ball at {self.ball['x'] * boardW}, paddle at {GameManager.paddle_config['width']}")
-				self.ball["x"] = (GameManager.paddle_config["width"] + radius + 2) / boardW
 				return True
-		#Right paddle
 		elif self.ball["x"] * boardW + radius >= boardW - GameManager.paddle_config["width"] - 1:
 			if ((self.ball["y"] * boardH <= pl2 + padH + 1) and
 				(self.ball["y"] * boardH >= pl2 - padH - 1)):
 				logger.info(f"Side col, ball at {self.ball['x'] * boardW}, paddle at {boardW - GameManager.paddle_config['width'] - 1}")
-				self.ball["x"] = (boardW - GameManager.paddle_config["width"] - radius - 2) / boardW
 				return True
 		return False
 
@@ -197,10 +192,7 @@ class GameManager:
 			logger.info(f"col Top pl1 x area")
 			if ((ballY + radius >= pl1_y - padH) and
 				(ballY - radius <= pl1_y + padH)):
-				logger.info(f"Top col, ball at X {self.ball['x'] * GameManager.board_config['width']}, paddle at {GameManager.paddle_config['width']}")
-				logger.info(f"ball Y is {ballY}, paddle Y at {pl1_y}")
-				# logger.info(f"col Top pl1")
-
+				logger.info(f"col Top pl1")
 				return True
 		# Right paddle # APPLY CHANGES HERE
 		elif self.ball["x"] * GameManager.board_config["width"] + radius >= pl2_x:
@@ -219,30 +211,21 @@ class GameManager:
 		self.ball["x"] += self.ball["xspeed"] / GameManager.board_config["width"]
 		self.ball["y"] += self.ball["yspeed"] / GameManager.board_config["height"]
 		ballX = self.ball["x"] * GameManager.board_config["width"]
-		ballY = self.ball["y"] * GameManager.board_config["height"]
 		is_col_s = self.is_pad_col_side()
 		is_col_t = self.is_pad_col_top()
 
 		# logger.info(f"Collitions TOP")
 		if is_col_s:
 			self.ball["xspeed"] *= -1
-			#self.ball["x"] += self.ball["xspeed"] * 3 / GameManager.board_config["width"]
+			self.ball["x"] += self.ball["xspeed"] / GameManager.board_config["width"]
 			logger.info(f"Collitions SIDE, xspeed of the ball {self.ball['xspeed']}")
 		elif is_col_t:
 			self.ball["yspeed"] *= -1
 			self.ball["y"] += self.ball["yspeed"] / GameManager.board_config["height"]
+			# self.ball["xspeed"] *= -1
 			logger.info(f"Collitions TOP")
-		#elif self.ball["y"] - radius <= 0:
-		elif ballY - GameManager.ball_config["rad"] <= 0:
-			logger.info(f"Coll top border {self.ball['y']}")
+		elif self.ball["y"] - radius <= 0 or self.ball["y"] + radius >= 1:
 			self.ball["yspeed"] *= -1
-			self.ball["y"] = (GameManager.ball_config["rad"] + 2) / GameManager.board_config["height"]
-
-		#elif self.ball["y"] + radius >= 1:
-		elif ballY + GameManager.ball_config["rad"] >= GameManager.board_config["height"]:
-			logger.info(f"Coll bottom border {self.ball['y']}")
-			self.ball["yspeed"] *= -1
-			self.ball["y"] = (GameManager.board_config["height"] - GameManager.ball_config["rad"] - 2) / GameManager.board_config["height"]
 		if not (is_col_s and is_col_t) and (ballX - GameManager.ball_config["rad"] <= 0):
 			await self.has_scored("player2")
 		elif not (is_col_s and is_col_t) and (ballX + GameManager.ball_config["rad"] >= GameManager.board_config["width"]):
@@ -416,7 +399,7 @@ class GameManager:
 					async with self.ball_lock:
 						await self.update_ball()
 					await self.send_update()
-				await asyncio.sleep(0.02)
+				await asyncio.sleep(0.016)
 		except Exception as e:
 			logger.error(f"Error in game loop: {e}")
 

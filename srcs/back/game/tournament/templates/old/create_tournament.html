@@ -1,0 +1,27 @@
+<div id="tournament-creator-container"> 
+    <!-- Title at the top -->
+    <div class="text-center mb-4">
+        <h1 class="tournament-title">{{ tournament }}</h1>
+    </div>
+
+    <!-- Input Section for Number of Players -->
+    <div class="d-flex flex-column align-items-center mb-4">
+        <!-- Row for text and label -->
+        <div class="d-flex align-items-center justify-content-center mb-2" style="width: 100%;">
+            <p class="mb-0 me-2 flex-grow-3" style="font-size: 20px; flex-basis: 75%;">{{ number_players }}</p>
+            <input type="number" id="number-of-players" class="form-control flex-grow-1" min="3" max="10" style="flex-basis: 25%; margin-left: 8px;">
+        </div>
+        <!-- Input and button -->
+        <div class="input-group" style="max-width: 400px;">
+            
+            <button class="btn btn-grey-purple" id="submit-players" type="submit" value="submit">{{ submit }}</button>
+        </div>
+    </div>
+
+    <!-- Home Button Section -->
+    <div class="d-flex justify-content-center">
+        <div class="col-12 col-md-6">
+            <button class="btn btn-grey-purple btn-large w-100" data-route="/home">{{ home }}</button>
+        </div>
+    </div>
+</div>

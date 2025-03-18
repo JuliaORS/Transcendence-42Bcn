@@ -81,10 +81,8 @@ export async function start3DLocalGame(playerName1, playerName2, mainUserNmb, di
     mainUser = mainUserNmb;
     await createLights(-20);
     await setupField();
-
     // controls.target.set(0, 7, 0);
     // console.log('Starting local game...');
-
 
     player1 = new LocalPlayer(dict, limits, scene, -1, playerName1, new THREE.Vector3(0, 0, -field.y + 2), -0.1, -0.5, 0);
     player2 = new LocalPlayer(dict, limits, scene, 1, playerName2, new THREE.Vector3(0, 0, field.y - 2), -0.1, -0.5, 0);
@@ -228,7 +226,7 @@ export function setupRemoteControls(player) {
 //async function initializeWebSocket(roomId) {
 async function initializeWebSocket(roomId = 123) {
     let retries = 0;
-
+    // console.log(`Initializing Web socket... ROOM ID ${roomID}`);
     const access_token = localStorage.getItem("access_token");
 	const token = await checkToken(access_token);
     if (!token) {
@@ -238,6 +236,7 @@ async function initializeWebSocket(roomId = 123) {
     if (!socket)
     {
         text.waiting.visible = true;
+        // console.log(`REALLY Initializing Web socket... ROOM ID ${roomID}`);
         socket = new WebSocket(`${protocolSocket}://${host}:${gamePort}/${protocolSocket}/G/${roomID.toString()}/?token=${token}`);
     }
     socket.onopen = () => {} //console.log("WebSocket connection established.");
@@ -290,7 +289,7 @@ async function initializeWebSocket(roomId = 123) {
                 handleOnlineEndgame(data);
                 break;
             default:
-                // console.log("Unhandled message type:", data.type);
+                console.log("Unhandled message type:", data.type);
         }
     };
 }
@@ -305,6 +304,7 @@ function convertXToFront(backX) {
 
 export async function scale3DGame(data)
 {
+    // console.log("333333333333D sCALE GAME")
     if (!player1) {
         player1 = new OnlinePlayer(data, dict, limits, scene, -1, "player1", new THREE.Vector3(0, 0, -field.y), -0.1, -0.5, 0);
         // console.log(`player1: ${field.y}`)
@@ -356,6 +356,7 @@ export function handle3DUpdate(data)
 }
 
 export async function setWhoAmI3D(data, sock) {
+    // console.log("3DDDDDD Set who am I ");
     text.waiting.visible = false;
     text.enemy.visible = true;
     await player1.setupText();
@@ -367,6 +368,7 @@ export async function setWhoAmI3D(data, sock) {
 }
 
 function handle3DRoleAssignment(role) {
+	// console.log("3DDDDDD Hi! I'm " + role + " Setting REmote controls");
 	if (role === "player1") {
         setupRemoteControls(player1);
         mainplayer = player1;
@@ -423,6 +425,7 @@ export async function start3DAIGame(playerName2, dict, tournament = null, diffic
     player1 = new AIPlayer(dict, limits, scene, -1, dict['enemy'], new THREE.Vector3(0, 0, -field.y + 2), -0.1);
     ball = new Ball(dict, scene, limits, [player1, player2], true);
     ai = new AIController(player1, ball, limits, difficulty);
+    // console.log("AI diffff", ai.difficulty);
     setupEvents();
     setupAIControls();
     animateAI();
@@ -500,7 +503,6 @@ async function setupScene(roomId = null) {
         if (roomId && !tournamentId) {
             id_3d = document.getElementById("3D-header-id");
             if (id_3d) {
-                // id_3d.textContent = `ID: ${roomID.substring(1)}`;
                 id_3d.textContent = `ID: ${roomId}`;
                 id_3d.style.color = "white";
             }
@@ -973,7 +975,7 @@ export async function cleanup3D() {
     waiting = false;
     pause = false;
 
-    // console.log("✅ 3D Scene cleaned up!");
+    console.log("✅ 3D Scene cleaned up!");
 }
 
 

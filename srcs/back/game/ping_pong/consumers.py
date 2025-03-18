@@ -203,10 +203,6 @@ class PongConsumer(AsyncWebsocketConsumer):
 					async with active_tournaments_lock:
 						if self.tour_id in active_tournaments:
 							tournament = active_tournaments[self.tour_id]
-							await self.channel_layer.group_discard(
-								self.tour_id,
-								self.channel_name
-							)
 							if tournament.countdown_task:
 								tournament.countdown_task.cancel()
 							if tournament.timer_task:
@@ -230,10 +226,10 @@ class PongConsumer(AsyncWebsocketConsumer):
 				elif data["type"] == "ready":
 					async with active_games_lock:
 						game.ready += 1
-						#logger.info(f"{self.user} is ready: {game.ready}")
+						logger.info(f"{self.user} is ready: {game.ready}")
 						if game.ready == 2:
 							game.status = 1
-							#logger.info(f"{self.role} ({self.user})starts the game")
+							logger.info(f"{self.role} ({self.user})starts the game")
 							await game.start_game(self.user)
 				elif data["type"] == "close":
 					logger.info("\033[1;32mRECEIVE METHOD CALLED: closed WS\033[0m")
@@ -281,23 +277,22 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 				elif dtype == "game_result":
 					logger.info("RECEIVED. we need to handle game result")
-					async with active_games_lock:
-						if not tournament.unfinished_game_exist(data["winner"], data["loser"]):
-							logger.info("game has already been finished and saved")
+					if not tournament.unfinished_game_exist(data["winner"], data["loser"]):
+						logger.info("game has already been finished and saved")
+						return
+					if data["winner"] != "@AI" and data["loser"] != "@AI":
+						if self.user.username == data["loser"]:
+							logger.info("for loser not handling the game res! return")
 							return
-						if data["winner"] != "@AI" and data["loser"] != "@AI":
-							if self.user.username == data["loser"]:
-								#logger.info("for loser not handling the game res! return")
-								return
-							logger.info("deleting game group")
-							await self.channel_layer.group_discard(
-								self.room_id,
-								self.channel_name
-							)
-							# async with active_games_lock:
+						logger.info("deleting game group")
+						await self.channel_layer.group_discard(
+							self.room_id,
+							self.channel_name
+						)
+						async with active_games_lock:
 							del active_games[self.room_id]
-						self.room_id = None
-						status = await tournament.handle_game_end(data, False)
+					self.room_id = None
+					status = await tournament.handle_game_end(data, False)
 					if status == "new":
 						tournament.increase_round()
 						await self.channel_layer.group_send(
@@ -350,7 +345,6 @@ class PongConsumer(AsyncWebsocketConsumer):
 							"message": message,
 						}
 					)
-					# await self.disconnect(1000)
 					logger.info(f"quit status : {status}")
 					if status == "remote":
 						if not self.room_id:
@@ -428,13 +422,13 @@ class PongConsumer(AsyncWebsocketConsumer):
 									active_games[self.room_id] = GameManager(self.room_id)
 						game = active_games[self.room_id]
 						game.tour_id = self.tour_id
-						#logger.info(f"START TGAME: users {game.users}")
+						logger.info(f"START TGAME: users {game.users}")
 						self.role = await game.join_room(self.user.username, False)
-						#logger.info(f"USERS NOW: {game.users}, LEN: {len(game.users)}")
-						#logger.info(f"PLAYERS NOW: {len(game.players)}")
-						#logger.info(f"START TGAME: self.role {self.role}")
+						logger.info(f"USERS NOW: {game.users}, LEN: {len(game.users)}")
+						logger.info(f"PLAYERS NOW: {len(game.players)}")
+						logger.info(f"START TGAME: self.role {self.role}")
 						if "player" not in self.role:
-							#logger.info(f"\033[1;31mwe're going to reject the connection\033[0m")
+							logger.info(f"\033[1;31mwe're going to reject the connection\033[0m")
 							await self.send(json.dumps({
 								"type": "reject",
 								"reason": self.role
