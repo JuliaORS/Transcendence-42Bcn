@@ -1,8 +1,4 @@
 from django.http import JsonResponse, HttpResponse
-#from django.views.decorators.csrf import csrf_exempt
-# from django.forms.models import model_to_dict
-# from django.core.files.base import ContentFile
-# from PIL import Image
 from pathlib import Path
 from django.contrib.auth.models import User
 import logging
@@ -14,7 +10,7 @@ import requests
 
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth import logout as django_logout
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.models import AnonymousUser, User
 from django.conf import settings
 from django.shortcuts import redirect
 from rest_framework.response import Response
@@ -65,7 +61,7 @@ class Callback42API(APIView):
     def post(self, request):
         code = request.GET.get('code')
         state = request.GET.get('state')
-        print(f"Code: {code}, State: {state}")
+        logger.info(f"Code: {code}, State: {state}")
         if not state or not code:
             raise AuthenticationFailed("Invalid authentication parameters")
         try:
@@ -77,7 +73,6 @@ class Callback42API(APIView):
             user = saveUser(str(intra_token))
             if user == AnonymousUser:
                 raise AuthenticationFailed("Authentication failed")
-
             profile = user.profile
             if profile.two_fa:
                 temp_token = generate_temp_token(user)
@@ -89,11 +84,10 @@ class Callback42API(APIView):
                     'username': user.first_name,
                     'message': '2FA required. Provide the verification code.'
                 })
-
             if request.user.is_authenticated:
-                print("User authenticated successfully:", request.user.username)
+               logger.info(f"User authenticated successfully: {request.user.username}")
             else:
-                print("User authentication failed")
+                logger.info("User authentication failed")
             refresh_token = RefreshToken.for_user(user)
             loginResponse = {
                 'success': True,
@@ -117,11 +111,11 @@ def saveUser(token):
             raise AuthenticationFailed("Couldn't recognize the user")
         name42 = '@' + user_data.get('login')
         try:
-            exist = User.objects.filter(username=name42).exists() # try catch
+            exist = User.objects.filter(username=name42).exists()
             if exist:
                 return User.objects.get(username=name42)
         except Exception as e:
-            print("Database empty, creating a user...")
+            logger.info("Database empty, creating a user...")
         user = User(username=name42, email=user_data.get('email'), first_name=user_data.get('first_name'), last_name=user_data.get('last_name')) # add first_name, last_name, photo
         user.save()
         user_img = None # here the default
@@ -131,7 +125,6 @@ def saveUser(token):
         user.profile.save()
         return user
     except Exception as e:
-        print("RETURNING Anonimous")
         return AnonymousUser()
 
 def defaultParams(code, state):

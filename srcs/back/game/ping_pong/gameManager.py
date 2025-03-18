@@ -189,10 +189,10 @@ class GameManager:
 
 		# Left paddle
 		if self.ball["x"] * GameManager.board_config["width"] - radius <= GameManager.paddle_config["width"]:
-			# logger.info(f"col Top pl1 x area")
+			logger.info(f"col Top pl1 x area")
 			if ((ballY + radius >= pl1_y - padH) and
 				(ballY - radius <= pl1_y + padH)):
-				# logger.info(f"col Top pl1")
+				logger.info(f"col Top pl1")
 				return True
 		# Right paddle # APPLY CHANGES HERE
 		elif self.ball["x"] * GameManager.board_config["width"] + radius >= pl2_x:
@@ -219,12 +219,12 @@ class GameManager:
 			self.ball["xspeed"] *= -1
 			self.ball["x"] += self.ball["xspeed"] / GameManager.board_config["width"]
 			logger.info(f"Collitions SIDE, xspeed of the ball {self.ball['xspeed']}")
-		if is_col_t:
+		elif is_col_t:
 			self.ball["yspeed"] *= -1
 			self.ball["y"] += self.ball["yspeed"] / GameManager.board_config["height"]
 			# self.ball["xspeed"] *= -1
 			logger.info(f"Collitions TOP")
-		if self.ball["y"] - radius <= 0 or self.ball["y"] + radius >= 1:
+		elif self.ball["y"] - radius <= 0 or self.ball["y"] + radius >= 1:
 			self.ball["yspeed"] *= -1
 		if not (is_col_s and is_col_t) and (ballX - GameManager.ball_config["rad"] <= 0):
 			await self.has_scored("player2")
