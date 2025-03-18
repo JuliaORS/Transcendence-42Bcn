@@ -52,8 +52,6 @@ export const params = {
     textY:  20,
     buttonColor: 0x9400FF,
     winnerColor: 0x22FFFF,//0x9400FF,//0xF5F045,//0xFF00FF,
-    // winnerPosAI: new THREE.Vector3(0, 20, 1.5),
-    // winnerPosPlayers: new THREE.Vector3(0, 2, field.x + 3),
 }
 
 export const textCount = {
@@ -78,26 +76,29 @@ export async function start3DLocalGame(playerName1, playerName2, mainUserNmb, di
     await setupScene();
     text = new SceneText(scene, dict, null, 0, -Math.PI / 2, 0);
     await text.createText();
-
-    camera = new THREE.PerspectiveCamera(75, size.width / (size.height - 36), 0.1, 1000);
-    camera.position.set(-39.5, 22.5, 0);
-    camera.lookAt(new THREE.Vector3(0, 0, 0))
+    setupCamera();
 
     mainUser = mainUserNmb;
     await createLights(-20);
     await setupField();
-    controls.target.set(0, 7, 0);
+
+    // controls.target.set(0, 7, 0);
+    // console.log('Starting local game...');
+
 
     player1 = new LocalPlayer(dict, limits, scene, -1, playerName1, new THREE.Vector3(0, 0, -field.y + 2), -0.1, -0.5, 0);
     player2 = new LocalPlayer(dict, limits, scene, 1, playerName2, new THREE.Vector3(0, 0, field.y - 2), -0.1, -0.5, 0);
     ball = new Ball(dict, scene, limits, [player1, player2], false);
     setupEvents();
-    setupControls();
+    await animateCameraToField(-39.5, 22.5, 0, 4000)
+    setupLocalControls();
     animateLocal();
 }
 
 // Event listeners for player controls
-export function setupControls() {
+export function setupLocalControls() {
+    
+    
     window.addEventListener("keydown", (e) => {
         if (!player1 || ! player2) return ;
 
@@ -105,16 +106,6 @@ export function setupControls() {
         if (e.key === "s") player1.down = true;
         if (e.key === "ArrowUp") player2.up = true;
         if (e.key === "ArrowDown") player2.down = true;
-        // if (e.code === "Space" && !gameStarted && !gameEnded) {
-        //     // console.log("Spacebar pressed! Starting game...");
-        //     gameStarted = true;
-        //     text.start.visible = false; // Hide the button
-        //     text.button.visible = false;
-        // }
-        // if (e.code === "Space" && !gameStarted && gameEnded) {
-        //     // console.log("Spacebar pressed! Try again...");
-        //     restart();
-        // }
     });
 
     window.addEventListener("keyup", (e) => {
@@ -124,8 +115,9 @@ export function setupControls() {
         if (e.key === "ArrowUp") player2.up = false;
         if (e.key === "ArrowDown") player2.down = false;
     });
-    setupButtonControls();
+    window.addEventListener("keydown", handleButtonControls);
 }
+
 
 // Game loop
 async function animateLocal() {
@@ -143,12 +135,7 @@ async function animateLocal() {
         player2.resetPos();
     }
 
-    // console.log(ball.mesh.position);
-    // controls.target.set(controls.target.x, controls.target.y + 0.01, controls.target.z);
-    controls.update();  // Required if you have damping enabled
-    // console.log(`camera ${camera.position.x}x${camera.position.y}x${camera.position.z}`)
-    // console.log(`target ${controls.target.x}x${controls.target.y}x${controls.target.z}`)
-    // Update scene and render 
+    controls.update();
     renderer.render(scene, camera);
     gameLoopId = requestAnimationFrame(animateLocal);
 }
@@ -524,6 +511,13 @@ async function setupScene(roomId = null) {
     scene.fog = new THREE.Fog(params.fogColor, params.fogNear, params.fogFar);
 }
 
+function setupCamera() {
+    camera = new THREE.PerspectiveCamera(75, size.width / (size.height - 36), 0.1, 1000);
+    // camera.position.set(-39.5, 22.5, 0);
+    camera.lookAt(new THREE.Vector3(0, 0, 0))
+}
+
+
 async function createLights(posX) {
 
     dirLight.position.set(posX, 20, 20);
@@ -589,9 +583,9 @@ async function setupField() {
     await createSky();
 }
 
-async function animateCameraToField( duration = 1000) {
+async function animateCameraToField( x = -39.5, y = 22.5, z = 0, duration = 1000) {
     const startPosition = new THREE.Vector3(-70.5, 240.5, 0);
-    const targetPosition = new THREE.Vector3(-39.5, 22.5, 0); // Adjust to your desired final camera position
+    const targetPosition = new THREE.Vector3(x, y, z); // Adjust to your desired final camera position
     const startLookAt = new THREE.Vector3(0, 170, 52);
     const targetLookAt = new THREE.Vector3(0, 7, 0); // Field position (where camera should look)
     // const duration = 1000; // Duration of animation in milliseconds
@@ -663,23 +657,13 @@ async function setupEvents() {
     window.addEventListener("click", (event) => { buttonsManager(event) });
 }
 
-export function setupButtonControls() {
-    window.addEventListener("keydown", handleButtonControls);
-}
+// export function setupButtonControls() {
+//     window.addEventListener("keydown", handleButtonControls);
+// }
 
-export function handleButtonControls(e) {
 
-        if (e.code === "Space" && !gameStarted && !gameEnded && text.start.visible == true) {
-            // console.log("Spacebar pressed! Starting game...");
-            gameStarted = true;
-            text.start.visible = false; // Hide the button
-            text.button.visible = false;
-        }
-        if (e.code === "Space" && !gameStarted && gameEnded && text.tryAgain.visible == true) {
-            // console.log("Spacebar pressed! Try again...");
-            restart();
-        }
-}
+
+
 
 const beforeUnloadHandlerAI = () => {
     if (tournamentId && !remote) {

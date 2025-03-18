@@ -80,13 +80,6 @@ export const playAI = async (args) => {
 
     if (!checkPermission) {
         navigateTo('/login');
-    // } else if (Enable3D === "true") {
-    //     //HERE SOMETHING WITH LANGUAGES
-    //     // const contentArea = document.getElementById('content-area');
-    //     // contentArea.innerHTML = ''; // Clear previous content
-    //     // start3DAIGame(localStorage.getItem('username'));
-    //     play3D();
-    
     } else {
         // console.log("Playing AI game. Tournament mode:", args?.tournament); 
         if (args?.tournament === "true") {

@@ -194,12 +194,13 @@ class GameManager:
 
 		# Left paddle
 		if self.ball["x"] * GameManager.board_config["width"] - radius <= GameManager.paddle_config["width"]:
-			# logger.info(f"col Top pl1 x area")
+			logger.info(f"col Top pl1 x area")
 			if ((ballY + radius >= pl1_y - padH) and
 				(ballY - radius <= pl1_y + padH)):
 				logger.info(f"Top col, ball at X {self.ball['x'] * GameManager.board_config['width']}, paddle at {GameManager.paddle_config['width']}")
 				logger.info(f"ball Y is {ballY}, paddle Y at {pl1_y}")
 				# logger.info(f"col Top pl1")
+
 				return True
 		# Right paddle # APPLY CHANGES HERE
 		elif self.ball["x"] * GameManager.board_config["width"] + radius >= pl2_x:
