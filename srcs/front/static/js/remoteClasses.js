@@ -152,26 +152,6 @@ export class Ball {
 		this.y = this.canvas.height / 2;
 	}
 
-	move(player, opponent, loopID) {
-		this.x += this.xspeed;
-		this.y += this.yspeed;
-
-		//Top and bottom wall collision
-		if (this.y <= 0 || this.y + this.radius >= this.canvas.height)
-			this.yspeed = -this.yspeed;
-
-		//Left paddle (player) collision
-		if (this.x <= player.width && this.y + this.radius >= player.y
-			&& this.y <= player.y + player.height)
-			this.xspeed = -this.xspeed;
-
-		//Right paddle (opponent) collision
-		else if (this.x + this.radius >= this.canvas.width - opponent.width
-			&& this.y + this.radius >= opponent.y
-			&& this.y <= opponent.y + opponent.height)
-			this.xspeed = -this.xspeed;
-	}
-
 	resize(nW, nH) {
 		const factor = nH / this.canvas.height;
 

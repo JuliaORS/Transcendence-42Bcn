@@ -323,8 +323,8 @@ async function initializeWebSocket(roomId, isCreator) {
 }
 
 
-
 function gameLoop() {
+
 	gameLoopId = requestAnimationFrame(gameLoop);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.fillStyle = "rgb(0 0 0 / 75%)";
@@ -336,11 +336,13 @@ function gameLoop() {
 	player.drawScore(ctx);
 	opponent.drawScore(ctx);
 	ball.draw(ctx);
+	
 
 	if (gameStop) {
 		stopTournamentGame();
 	}
 }
+
 
 function resizeCanvasRemote() {
 	if (!canvas)
