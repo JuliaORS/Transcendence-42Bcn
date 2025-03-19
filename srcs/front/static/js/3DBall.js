@@ -198,7 +198,7 @@ export class Ball extends BasicBall {
 
     onGoal() {
         this.resetPos();
-        this.dispatchEvent({ type: 'aipause'});
+        this.dispatchEvent({ type: 'pause'});
     }
 }
 

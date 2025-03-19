@@ -1,22 +1,4 @@
-
-
-export function handlePlayersKeydown(e) {
-
-    if (player1) {
-        if (e.key === "w") player1.up = true;
-        if (e.key === "s") player1.down = true;
-    }
-
-    if (player2) {
-        if (e.key === "ArrowUp") player2.up = true;
-        if (e.key === "ArrowDown") player2.down = true;
-    }
-
-    if (player3) {
-        if (e.key === "ArrowLeft") player3.up = true;
-        if (e.key === "ArrowRight") player3.down = true;
-    }
-}
+import { gameStarted, gameEnded, text } from "./3DGame.js";
 
 export function handlePlayersKeydown(e, player1, player2, player3) {
 

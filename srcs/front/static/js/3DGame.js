@@ -8,6 +8,7 @@ import { Ball, OnlineBall } from './3DBall.js';
 import { SceneText, textWinner } from './3DText.js';
 import { AmbientLight, DirectionalLight , Vector3} from 'three'
 import { drawHeader, navigateTo } from "./main.js";
+import { handlePlayersKeydown, handlePlayersKeyup } from "./3DControllers.js" 
 import { saveTournamentGameResult, startTournamentGame, stopTournamentGame } from "./tournament.js"
 import { checkToken } from "./onlineStatus.js";
 import { showModalError } from "./errorHandler.js";
@@ -24,8 +25,9 @@ let renderer, scene, camera, lights, headerHeight;
 let limits, plane, addplane, controls;
 let player1, player2, ai, mainplayer, mainUser, ball; // if the main user is player 1 or 2
 let dict, cameraId, gameLoopId, socket, roomID, tournamentId;
-let moveCamera, remote, waiting, pause, gameStarted, gameEnded;
+let moveCamera, remote, waiting, pause;
 export let text = null;
+export let gameStarted = false, gameEnded = false;
 
 const clock = new THREE.Clock();
 clock.start();
@@ -81,41 +83,41 @@ export async function start3DLocalGame(playerName1, playerName2, mainUserNmb, di
     mainUser = mainUserNmb;
     await createLights(-20);
     await setupField();
-    // controls.target.set(0, 7, 0);
-    // console.log('Starting local game...');
 
     player1 = new LocalPlayer(dict, limits, scene, -1, playerName1, new THREE.Vector3(0, 0, -field.y + 2), -0.1, -0.5, 0);
     player2 = new LocalPlayer(dict, limits, scene, 1, playerName2, new THREE.Vector3(0, 0, field.y - 2), -0.1, -0.5, 0);
     ball = new Ball(dict, scene, limits, [player1, player2], false);
-    setupEvents();
-    await animateCameraToField(-39.5, 22.5, 0, 4000)
+    setupLocalEvents();
+    await animateCameraToField(-39.5, 22.5, 0, 3000)
     setupLocalControls();
     animateLocal();
 }
 
 // Event listeners for player controls
 export function setupLocalControls() {
-    
-    
-    window.addEventListener("keydown", (e) => {
-        if (!player1 || ! player2) return ;
-
-        if (e.key === "w") player1.up = true;
-        if (e.key === "s") player1.down = true;
-        if (e.key === "ArrowUp") player2.up = true;
-        if (e.key === "ArrowDown") player2.down = true;
-    });
-
-    window.addEventListener("keyup", (e) => {
-        if (!player1 || ! player2) return ;
-        if (e.key === "w") player1.up = false;
-        if (e.key === "s") player1.down = false;
-        if (e.key === "ArrowUp") player2.up = false;
-        if (e.key === "ArrowDown") player2.down = false;
-    });
-    window.addEventListener("keydown", handleButtonControls);
+    window.addEventListener("keydown", (e) => handlePlayersKeydown(e, player1, player2, null));
+    window.addEventListener("keyup", (e) => handlePlayersKeyup(e, player1, player2, null));
+    window.addEventListener("keydown", handleButtonKeyControls);
 }
+async function setupLocalEvents() {
 
+    ball.addEventListener("localfinish", (e) => {
+        handleEnd3DGame(e.message);
+        if (!player1 || !player2) return;
+        saveScore(player1.score, player2.score, mainUser);
+    })
+
+    ball.addEventListener("pause", (e) => {
+        // console.log('goal!! pause');
+        pause = true;
+        showCountdown(() => {
+            ball.resetVelocity(); // Randomize direction
+            pause = false;
+        });
+    })
+
+    window.addEventListener("click", (event) => { buttonsClickManager(event) });
+}
 
 // Game loop
 async function animateLocal() {
@@ -139,14 +141,14 @@ async function animateLocal() {
 }
 
 //---------------------------------------------------------------------------------//
-// ------------------ LOCAL GAME WITH ANOTHER PLAYER FUNCTIONS ------------------- //
+// ------------------ REMOTE GAME WITH ANOTHER PLAYER FUNCTIONS ------------------- //
 //---------------------------------------------------------------------------------//
 
-// Start game function
 export async function start3DRemoteGame(dict, tournament, roomId, isCreator) {
+    
     window.gameDict = dict;
     init();
-    remote = true;
+    // remote = true;
     tournamentId = tournament;
     roomID = roomId;
     // console.log(`ROOM ID: ${roomId}, is Creator: ${isCreator}`)
@@ -159,68 +161,41 @@ export async function start3DRemoteGame(dict, tournament, roomId, isCreator) {
     await setupScene(roomId);
     text = new SceneText(scene, dict, true, 0, -Math.PI / 2);
     await text.createText();
-    camera = new THREE.PerspectiveCamera(75, size.width / size.height, 0.1, 1000);
-    camera.position.set(-90.5, 200.5, 0);
-    camera.lookAt(new THREE.Vector3(0, 201, 53))
-
+    setupCamera();
     await createLights(-20);
     await setupField();
-    controls.target.set(50, 201, 0);
-
     setupRemoteEvents();
 
-    await animateCameraToField();
+    await animateCameraToField(-39.5, 22.5, 0, 1000);
     if (tournamentId) 
         startTournamentGame();
     animateRemote();
-
 }
 
 async function setupRemoteEvents() {
-    
-    window.addEventListener("keydown", async (e) => {
-       
-        if (e.code === "Space" && !gameStarted && !gameEnded &&  text.start.visible == true) {
-            // console.log("Spacebar pressed! Starting game...");
-
-            text.start.visible = false; // Hide the button
-            text.button.visible = false;
-            if (!moveCamera) {
-                moveCamera = true;
-                text.button.position.set(0, params.textY, 0);
-                text.start.position.set(0, params.textY, 1.5);
-                await animateCameraToField()
-            } else if (!tournamentId) {
-                // console.log("initializing Web Socket")
-                initializeWebSocket(roomID);
-            }
-        }
-        if (e.code === "Space" && !gameStarted && gameEnded && text.tryAgain.visible == true) {
-            restart();
-        }
-    });
-    window.addEventListener("click", (event) => { buttonsManager(event) }); // add a different action here
     window.addEventListener("beforeunload", beforeUnloadHandlerRemote);
 }
 
 // Event listeners for player controls
 export function setupRemoteControls(player) {
-    window.addEventListener("keydown", (e) => {
-        if (!player) return ;
-        if (e.key === "w") player.up = true;
-        if (e.key === "s") player.down = true;
-        if (e.key === "ArrowUp") player.up = true;
-        if (e.key === "ArrowDown") player.down = true;
+    window.addEventListener("keydown", (e) => handlePlayersKeydown(e, player, player, null));
+    window.addEventListener("keyup", (e) => handlePlayersKeyup(e, player, player, null));
+    // window.addEventListener("keydown", (e) => {
+    //     if (!player) return ;
+    //     if (e.key === "w") player.up = true;
+    //     if (e.key === "s") player.down = true;
+    //     if (e.key === "ArrowUp") player.up = true;
+    //     if (e.key === "ArrowDown") player.down = true;
         
-    });
+    // });
 
-    window.addEventListener("keyup", (e) => {
-        if (!player) return ;
-        if (e.key === "w") player.up = false;
-        if (e.key === "s") player.down = false;
-        if (e.key === "ArrowUp") player.up = false;
-        if (e.key === "ArrowDown") player.down = false;
-    });
+    // window.addEventListener("keyup", (e) => {
+    //     if (!player) return ;
+    //     if (e.key === "w") player.up = false;
+    //     if (e.key === "s" ) player.down = false;
+    //     if (e.key === "ArrowUp") player.up = false;
+    //     if (e.key === "ArrowDown") player.down = false;
+    // });
 }
 
 //async function initializeWebSocket(roomId) {
@@ -611,8 +586,10 @@ async function animateCameraToField( x = -39.5, y = 22.5, z = 0, duration = 1000
             cameraId = requestAnimationFrame(updateCamera); // Continue animation
         } else {
             cancelAnimationFrame(cameraId);
-            if (remote && !tournamentId)
+            if (roomID)
                 initializeWebSocket(roomID);
+            // if (remote && !tournamentId)
+            //     initializeWebSocket(roomID);
             return;
         } 
     }
@@ -640,7 +617,7 @@ async function setupEvents() {
     })
 
     ball.addEventListener("aipause", (e) => {
-        // console.log('goal!! pause');
+        console.log('goal!! pause');
         pause = true;
         showCountdown(() => {
             // console.log("Game resuming!");
@@ -651,29 +628,42 @@ async function setupEvents() {
     })
 
     ball.addEventListener("airestart", (e) => {
+        console.log('restart after pause');
         pause = false;
     })
 
     window.addEventListener("beforeunload", beforeUnloadHandlerAI);
     
-    window.addEventListener("click", (event) => { buttonsManager(event) });
+    window.addEventListener("click", (event) => { buttonsClickManager(event) });
 }
 
 // export function setupButtonControls() {
 //     window.addEventListener("keydown", handleButtonControls);
 // }
+export function handleButtonKeyControls(e) {
 
-
-
-
+    if (e.code === "Space" && !gameStarted && !gameEnded && text.start.visible == true) {
+        console.log("Spacebar pressed! Starting game...");
+        gameStarted = true;
+        text.start.visible = false; // Hide the button
+        text.button.visible = false;
+    }
+    if (e.code === "Space" && !gameStarted && gameEnded && text.tryAgain.visible == true) {
+        // console.log("Spacebar pressed! Try again...");
+        restart();
+    }
+}
 
 const beforeUnloadHandlerAI = () => {
-    if (tournamentId && !remote) {
+    // if (tournamentId && !remote) {
+    //     saveTournamentGameResult("@AI", player2.name, 0, player1.score);
+    // }
+    if (tournamentId && roomID) {
         saveTournamentGameResult("@AI", player2.name, 0, player1.score);
     }
 };
 
-async function buttonsManager(event) {
+async function buttonsClickManager(event) {
     if (gameStarted) return; // Ignore clicks after the game starts
     if (!text || !text.button || !text.start || !text.tryAgain) {
         // console.log("One or more 3D buttons are not initialized.");
@@ -696,19 +686,20 @@ async function buttonsManager(event) {
         // console.log("3D Start Button Clicked!");
         text.start.visible = false; // Hide the button
         text.button.visible = false;
-        if (remote && !moveCamera) {
-            // console.log(`Starting online game: Remote: ${remote}, Tour: ${tournamentId}, moveCamera: ${moveCamera}`)
-            moveCamera = true;
-            text.button.position.set(0, params.textY, 0);
-            text.start.position.set(0, params.textY, 1.5);
-            await animateCameraToField()
-        } else if (remote && !tournamentId) {
-            // console.log(`Remote: ${remote}, Tour: ${tournamentId}, initializing the sockets`)
-            initializeWebSocket(roomID);
-        } else {
-            // console.log(`Starting local game: Remote: ${remote}, Tour: ${tournamentId}, moveCamera: ${moveCamera}`)
-            gameStarted = true;
-        }
+        gameStarted = true;
+        // if (remote && !moveCamera) {
+        //     // console.log(`Starting online game: Remote: ${remote}, Tour: ${tournamentId}, moveCamera: ${moveCamera}`)
+        //     moveCamera = true;
+        //     text.button.position.set(0, params.textY, 0);
+        //     text.start.position.set(0, params.textY, 1.5);
+        //     await animateCameraToField()
+        // } else if (remote && !tournamentId) {
+        //     // console.log(`Remote: ${remote}, Tour: ${tournamentId}, initializing the sockets`)
+        //     initializeWebSocket(roomID);
+        // } else {
+        //     // console.log(`Starting local game: Remote: ${remote}, Tour: ${tournamentId}, moveCamera: ${moveCamera}`)
+        
+        // }
     } else if ((intersects.length > 0 || intersectsTryAgain.length > 0) && gameEnded && text.tryAgain.visible == true) {
         // console.log("3D TryAgain Button Clicked!");
         restart();
@@ -828,21 +819,21 @@ async function createSky() {
 
 async function restart() {
 
-    if (!remote) {
+    // if (!remote) {
         resetTeam(); // resets the ball and players;
-    } else {
-        resetOnlineTeam();
-    }
+    // } else {
+    //     resetOnlineTeam();
+    // }
     gameEnded = false;
     // gameStarted = true;
     text.tryAgain.visible = false; // Hide the button
     text.winnerMessage.visible = false;
-    if (!remote) {
+    // if (!remote) {
         text.start.visible = true;
-    } else {
-        text.button.visible = false;
-        initializeWebSocket(roomID);
-    }
+    // } else {
+    //     text.button.visible = false;
+    //     initializeWebSocket(roomID);
+    // }
 }
 
 function resetOnlineTeam() {
@@ -921,8 +912,8 @@ export async function cleanup3D() {
     contentArea.style.padding = "3rem"; //to restore the padding when exit the 3D
     // Remove event listeners (if any)
     window.removeEventListener("resize", handleResize);
-    window.removeEventListener("click", buttonsManager);
-    window.removeEventListener("keydown", handleButtonControls);
+    window.removeEventListener("click", buttonsClickManager);
+    window.removeEventListener("keydown", handleButtonKeyControls);
     if (remote && tournamentId) {
         window.removeEventListener("beforeunload", beforeUnloadHandlerRemote);
     } else if (!remote && tournamentId) {
