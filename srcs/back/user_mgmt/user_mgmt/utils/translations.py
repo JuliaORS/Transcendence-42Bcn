@@ -107,7 +107,10 @@ def get_lang_words(lang):
 			'invalid_code': "Código TOTP inválido o expirado.",
 			'2fa_disable': "La autenticación en dos pasos se ha desactivado correctamente.",
 			'invalid_verification_code': "Código de verificación inválido o expirado.",
-			"invalid_temp_token": "Token temporal inválido o expirado.",
+			'invalid_temp_token': "Token temporal inválido o expirado.",
+			'online': "En linea",
+			'offline': "Desconectado",
+
 		}
 
 	elif lang == 'CA':
@@ -210,7 +213,9 @@ def get_lang_words(lang):
 			"invalid_code": "Codi TOTP invàlid o caducat.",
 			"2fa_disable": "L'autenticació en dos passos s'ha desactivat correctament.",
 			'invalid_verification_code': "Codi de verificació invàlid o caducat.",
-			"invalid_temp_token": "Token temporal invàlid o caducat.",
+			'invalid_temp_token': "Token temporal invàlid o caducat.",
+			'online': "Conectat",
+			'offline': "Desconnectat",
 		}
 
 	elif lang == 'RU':
@@ -316,7 +321,9 @@ def get_lang_words(lang):
 			"invalid_code": "Недействительный или истекший TOTP-код.",
 			"2fa_disable": "Двухфакторная аутентификация успешно отключена.",
 			'invalid_verification_code': "Неверный или истекший код подтверждения.",
-			"invalid_temp_token": "Недействительный или истекший временный токен.",
+			'invalid_temp_token': "Недействительный или истекший временный токен.",
+			'online': "онлайн",
+			'offline': "деконектадо",
 		}
 
 	elif lang == 'LV':
@@ -421,17 +428,24 @@ def get_lang_words(lang):
 			"invalid_code": "Nederīgs vai beidzies TOTP kods.",
 			"2fa_disable": "Divfaktoru autentifikācija veiksmīgi atspējota.",
 			'invalid_verification_code': "Nederīgs vai beidzies verifikācijas kods.",
-			"invalid_temp_token": "Nederīgs vai beidzies pagaidu pilnvarojuma žetons.",
+			'invalid_temp_token': "Nederīgs vai beidzies pagaidu pilnvarojuma žetons.",
+			'online': "tiešsaistē",
+			'offline': "bezsaistē",
 		}
 		
 	else:
 		return {
 			'lang': "EN",
-      'lang_flag': """
-                    <svg id="mySvg" viewBox="0 0 1200 800" width="30" height="20" data-lang="EN">
-                        <rect width="1200" height="800" fill="#ffffff" data-lang="EN" />
-                        <rect width="200" height="800" x="400" fill="#c8102e" data-lang="EN" />
-                        <rect width="1200" height="200" y="300" fill="#c8102e" data-lang="EN" />
+      		'lang_flag': """
+                    <svg width="30" height="20" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg">
+						<rect width="64" height="32" fill="#012169" data-lang="EN"/>
+						<path d="M0,0 L64,32 M64,0 L0,32" stroke="#FFF" stroke-width="6" data-lang="EN"/>
+						<path d="M0,0 L64,32 M64,0 L0,32" stroke="#C8102E" stroke-width="4" data-lang="EN"/>
+						<rect x="26" width="12" height="32" fill="#FFF" data-lang="EN"/>
+						<rect y="10" width="64" height="12" fill="#FFF" data-lang="EN"/>
+						<rect x="28" width="8" height="32" fill="#C8102E" data-lang="EN"/>
+						<rect y="12" width="64" height="8" fill="#C8102E" data-lang="EN"/>
+
                     </svg>
                     """,
 			'profile_wo': "Profile",
@@ -526,6 +540,8 @@ def get_lang_words(lang):
 			"invalid_code": "Invalid or expired TOTP code.",
 			"2fa_disable": "2FA disabled successfully.",
 			'invalid_verification_code': "Invalid or expired verification code.",
-			"invalid_temp_token": "Invalid or expired temporary token.",
+			'invalid_temp_token': "Invalid or expired temporary token.",
+			'online': "online",
+			'offline': "offline",
 		}
 

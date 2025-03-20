@@ -125,6 +125,79 @@ export function setupControls(player1, player2) {
     });
 }
 
+
+let player1TouchId = null;
+let player2TouchId = null;
+
+document.addEventListener("touchstart", (e) => {
+	// Loop through new touches and assign them if not already set
+	if (!canvas) return ;
+	for (let touch of e.changedTouches) {
+		const rect = canvas.getBoundingClientRect();
+		const relativeX = touch.clientX - rect.left;
+		const relativeY = touch.clientY - rect.top;
+
+		if (relativeX < rect.width / 2 && player1TouchId === null) {
+		  player1TouchId = touch.identifier;
+		  // Optionally update immediately:
+		  player1.y = relativeY - player1.height / 2;
+		}
+		else if (relativeX >= rect.width / 2 && player2TouchId === null) {
+			player2TouchId = touch.identifier;
+			player2.y = relativeY - player2.height / 2;
+		}
+	}
+	if (player1.y < 0)
+		player1.y = 0;
+	else if (player1.y > canvas.height)
+		player1.y = canvas.height - player1.height;
+	if (player2.y < 0)
+		player2.y = 0;
+	else if (player2.y > canvas.height)
+		player2.y = canvas.height - player2.height;
+}, { passive: false });
+
+document.addEventListener("touchmove", (e) => {
+	if (!canvas) return ;
+	for (let touch of e.changedTouches) {
+	const rect = canvas.getBoundingClientRect();
+	const relativeY = touch.clientY - rect.top;
+  
+	if (touch.identifier === player1TouchId)
+		player1.y = relativeY - player1.height / 2;
+	else if (touch.identifier === player2TouchId)
+		player2.y = relativeY - player2.height / 2;
+	}
+	if (player1.y < 0)
+		player1.y = 0;
+	else if (player1.y > canvas.height)
+		player1.y = canvas.height - player1.height;
+	if (player2.y < 0)
+		player2.y = 0;
+	else if (player2.y > canvas.height)
+		player2.y = canvas.height - player2.height;
+
+	e.preventDefault(); // Prevent scrolling
+}, { passive: false });
+
+document.addEventListener("touchend", (e) => {
+	for (let touch of e.changedTouches) {
+		if (touch.identifier === player1TouchId)
+			player1TouchId = null;
+		else if (touch.identifier === player2TouchId)
+			player2TouchId = null;
+	}
+}, { passive: false });
+
+document.addEventListener("touchcancel", (e) => {
+	for (let touch of e.changedTouches) {
+		if (touch.identifier === player1TouchId)
+			player1TouchId = null;
+		else if (touch.identifier === player2TouchId)
+			player2TouchId = null;
+	}
+}, { passive: false });
+
 function resizeCanvasLocal() {
 	if (!canvas)
 		return ;

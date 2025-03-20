@@ -229,11 +229,13 @@ export const gameAI = async (args) => {
                     const canvas = document.getElementById("newGameCanvas");
                     if (canvas) {
                         const button = document.getElementById('play-again');
+                        const span = document.getElementById('span-remote');
                         if (button && !tournament) {
                             button.setAttribute("data-route", "/play-ai");
                             button.setAttribute("replace-url", true);
                         } else if (button && tournament) {
-                            button.textContent = dictionary['quit_tournament'] || "Quit Tournament";
+                            button.innerHTML = dictionary['quit_tournament_special'] || "Quit Tournament";
+                            // span.textContent = dictionary['quit_tournament'] || "Quit Tournament";
                             button.setAttribute("data-route", "/quit-tournament");
                             button.setAttribute("replace-url", true);
                             // button.removeAttribute("data-route");

@@ -137,13 +137,19 @@
 }
 
 #match-history-container th, #match-history-container td {
-    border: 1px solid #ddd;
+    border: 1px solid #ebebeb91;;
     padding: 8px;
   }
-  
+
+  #match-history-container td{
+    background-color: rgba(128, 128, 128, 0.3);
+    color: #e1e1e1;;
+  }
+
   #match-history-container th {
-    background-color: #634b75;
+    background-color: #564690;
     text-align: left;
+    color: #e1e1e1;
   }
   
   #match-history-container button {
@@ -186,4 +192,28 @@
   box-shadow: none; /* Elimina el box-shadow por defecto */
   color: #ffffff;
 }
+
+.custom-file-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.custom-file-upload label {
+    background-color: #5f45bf;
+    color: white;
+    padding: 1px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+  /* .table-responsive {
+    border: 5px solid #4732af;
+  } */
 

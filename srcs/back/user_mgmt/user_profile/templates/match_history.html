@@ -1,4 +1,4 @@
-<div id="match-history-container">
+<!-- <div id="match-history-container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>{{match_history}}</h1>
     </div>
@@ -52,4 +52,67 @@
             {% endfor %}
         </tbody>
     </table>
+</div> -->
+
+<div id="match-history-container" class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>{{match_history}}</h1>
+    </div>
+
+    <div id="filters" class="mb-3">
+        <div class="row">
+            <div class="col-md-3 mb-2">
+                <label for="filter-date">{{date_wo}}</label>
+                <input type="date" id="filter-date" class="form-control">
+            </div>
+            <div class="col-md-5 mb-2">
+                <label for="filter-winner">{{winner_wo}}</label>
+                <input type="text" id="filter-winner" class="form-control" placeholder="{{enter_winner_username_placeholder}}">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label for="filter-tournament">{{tournament}}</label>
+                <select id="filter-tournament" class="form-control">
+                    <option value="">{{all}}</option>
+                    <option value="{{yes}}">{{yes}}</option>
+                    <option value="{{no}}">{{no}}</option>
+                </select>
+            </div>
+            <div class="col-md-2 mb-2">
+                <button id="apply-filters" class="btn btn-standar" style="margin-top: 24px; width: 100%;">{{apply_filters}}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered" style="margin-bottom: 0;">
+            <thead>
+                <tr>
+                    <th>{{date_wo}}</th>
+                    <th>{{player_wo}} 1</th>
+                    <th>{{score_wo}} 1</th>
+                    <th>{{player_wo}} 2</th>
+                    <th>{{score_wo}} 2</th>
+                    <th>{{winner_wo}}</th>
+                    <th>{{tournament}}</th>
+                </tr>
+            </thead>
+            <tbody id="match-history-table-body">
+                {% for game in match_history_games %}
+                    <tr>
+                        <td>{{ game.date }}</td>
+                        <td>{{ game.player1 }}</td>
+                        <td>{{ game.score_player1 }}</td>
+                        <td>{{ game.player2 }}</td>
+                        <td>{{ game.score_player2 }}</td>
+                        <td>{{ game.winner }}</td>
+                        <td>{% if game.tournament_id >= 0 %}{{yes}}{% else %}{{no}}{% endif %}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">{{no_match_history}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>

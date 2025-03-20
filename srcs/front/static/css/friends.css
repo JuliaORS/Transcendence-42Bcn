@@ -1,9 +1,9 @@
 #search-users-container {
     display: block;
     margin: 0 auto;
-    max-width: 1200px;
-    min-width: 500px;
-    width: 100%;
+    /* max-width: 1200px;
+    min-width: 500px; */
+    width: 80%;
     min-height: 100vh;
     position: relative;
     margin-top: 100px;

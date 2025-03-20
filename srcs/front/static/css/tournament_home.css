@@ -222,12 +222,16 @@ h2 {
   }
 
   @media (min-width: 768px) {
-    #join-tournament-form, #create-tournament-form, #get-difficulty {
+    #join-tournament-form, #create-tournament-form {
         flex: 0 0 auto;
         width: 37.66666667%;
     }
+    #get-difficulty{
+      flex: 0 0 auto;
+      width: 57%;
+    }
 }
-  
+
 @media (max-width: 768px) {
     .tournament-wrapper {
       flex-direction: column;

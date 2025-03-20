@@ -238,7 +238,7 @@ export const quitTournament = () => {
 export const saveTournamentGameResult = (winner, loser, playerScore, AIScore) => {
     const button = document.getElementById('play-again');
     if (button) {
-        button.textContent = dict['back_tour'] || "Back to Tournament Page";
+        button.innerHTML = dict['back_tour_special'] || "Back to Tournament Page";
         button.setAttribute("data-route", "/tournament-bracket");
     }
     removeBeforeUnloadListenerAI();

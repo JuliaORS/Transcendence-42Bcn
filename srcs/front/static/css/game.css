@@ -105,6 +105,12 @@ canvas {
     animation: fieldGlow 3s infinite alternate;
 }
 
+/* @media (max-width: 650px) {
+    #newGameCanvas {
+        transform: rotate(90deg);
+    }
+} */
+
 #play-again {
     width: 30%;
     align-self: center;

@@ -66,6 +66,12 @@ def get_lang_words(lang):
 			"congrats": "¡Felicidades! ¡Has ganado!",
 			"good_luck": "Mejor suerte la próxima vez...",
 			"back_tour": "Volver a la página del torneo",
+			"create_room": "Crear sala",
+			"tournament_results": "Resultados del Torneo",
+			"tournament_not_found": "Torneo no encontrado",
+			'quit_tournament_special': "<span  class=\"button-content-trn\">Salir del torneo</span>",
+			'back_tour_special': "<span  class=\"button-content-trn\">Volver a la página del torneo</span>",
+
 		}
 	elif lang == 'CA':
 		return {
@@ -126,6 +132,12 @@ def get_lang_words(lang):
 			"congrats": "Felicitats! Has guanyat!",
 			"good_luck": "Més sort la pròxima vegada...",
 			"back_tour": "Tornar a la pàgina del torneig",
+			"create_room": "Crear sala",
+			"tournament_results": "Resultats del torneig",
+			"tournament_not_found": "Torneig no trobat",
+			'quit_tournament_special': "<span  class=\"button-content-trn\">Sortir del torneig</span>",
+			'back_tour_special': "<span  class=\"button-content-trn\">Tornar a la pàgina del torneig</span>",
+
 		}
 	elif lang == 'RU':
 		return {
@@ -189,6 +201,12 @@ def get_lang_words(lang):
 			"congrats": "Поздравляем! Вы выиграли!",
 			"good_luck": "Удачи в следующий раз...",
 			"back_tour": "Вернуться на страницу турнира",
+			"create_room": "Создать комнату",
+			"tournament_results": "Результаты турнира",
+			"tournament_not_found": "Турнир не найден",
+			'quit_tournament_special': "<span  class=\"button-content-trn\">Покинуть турнир</span>",
+			'back_tour_special': "<span  class=\"button-content-trn\">Вернуться на страницу турнира</span>",
+
 		}
 	elif lang == 'LV':
 		return {
@@ -249,6 +267,12 @@ def get_lang_words(lang):
 			"congrats": "Apsveicam! Tu uzvarēji!",
 			"good_luck": "Veiksmi nākamreiz...",
 			"back_tour": "Atpakaļ uz turnīra lapu",
+			"create_room": "Izveidot istabu",
+			"tournament_results": "Turnīra rezultāti",
+			"tournament_not_found": "Turnīrs nav atrasts",
+			'quit_tournament_special': "<span  class=\"button-content-trn\">Iziet no turnīra</span>",
+			'back_tour_special': "<span  class=\"button-content-trn\">Atpakaļ uz turnīra lapu</span>",
+
 		}
 	else:
 		return {
@@ -309,4 +333,8 @@ def get_lang_words(lang):
 			"good_luck": "Better luck next time...",
 			"back_tour" : "Back to tournament page",
 			'waiting_for_players': "Waiting for players...",
+			"tournament_results": "Tournament Results",
+			'quit_tournament_special': "<span  class=\"button-content-trn\">Quit tournament</span>",
+			'back_tour_special': "<span  class=\"button-content-trn\">Back to tournament page</span>",
+
 		}
