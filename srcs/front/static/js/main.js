@@ -5,12 +5,12 @@ import { loadHomePage } from "./home.js";
 import { loadFriendsSearchPage } from "./friends.js"
 import { handleLogout } from "./logout.js"
 import { loadLogin2FAPage, enable2FA, disable2FA } from "./twoFA.js";
-import { clearIntervalIDGame, cleanupAI } from "./AIGame.js"
-import { playLocal, restartOnline, playAI, gameAI, playOnline, play3D, gameLocal, loadRemoteHome  } from "./game.js"
+import { clearIntervalIDGame } from "./AIGame.js"
+import { playLocal, quitOnline, playAI, gameAI, playOnline, play3D, gameLocal, loadRemoteHome  } from "./game.js"
 import { cleanup3D, exit3D } from "./3DGame.js";
 import { tournamentConnect, manageTournamentHomeBtn, loadTournamentHomePage, createTournament, joinTournament, loadWaitingRoomPage, loadBracketTournamentPage, loadFinalTournamentPage, quitTournament, tournamentGameRequest } from "./tournament.js";
-import { cleanupLocal } from "./localGame.js"
-import { connectWS, disconnectWS } from "./onlineStatus.js";
+import { cleanupLocal, quitLocal } from "./localGame.js"
+import { connectWS } from "./onlineStatus.js";
 import { cleanRemote } from "./remoteGame.js";
 import { loadPageNotFound, showModalError } from "./errorHandler.js";
 
@@ -47,9 +47,10 @@ const routes = {
     '/logout': handleLogout,
     '/settings': loadProfileSettingsPage,
     '/play-local': playLocal,
+    '/quit-local': quitLocal,
     '/play-ai': (args) => playAI(args),
     '/play-online': (args) => playOnline(args),
-    '/restart-online': restartOnline,
+    '/quit-online': quitOnline,
     '/game-local': gameLocal,
     '/play-3d': play3D,
     '/play-ai-game': (args) => gameAI(args),
@@ -108,11 +109,12 @@ export function drawHeader(headerType) {
                 document.getElementById('header-area').innerHTML = data.header_html;
                 document.dispatchEvent(new CustomEvent("headerLoaded"));
                 // console.log('header event active');
-            }
+            } else
+                console.log('Header not found in response:', data);
             resolve();
         })
         .catch(error => {
-            // console.log('Error loading Header =(', error);
+            console.log('Error loading Header =(', error);
             reject(error);
         });
     });
@@ -246,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let shouldRoute = true;
 
     window.addEventListener('popstate', (event) => {
-        // console.log("Popstate triggered:", event);
+        console.log("Popstate triggered:", event);
         // shouldRoute = false;
         // cleanup3D();       // Always clean up before routing
         // clearIntervalIDGame();
@@ -268,7 +270,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // navigateTo('/waiting-room');
             router();
         }).catch((error) => {
-            // console.log("Error connecting WebSocket:", error);
+            console.log("Error connecting WebSocket:", error);
+            // Handle error, possibly redirect to another page or show an alert
         });
     } else if (tourReload) {
         localStorage.removeItem("tournamentReload");

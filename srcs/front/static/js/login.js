@@ -18,7 +18,7 @@ function handleInvalidToken() {
 export async function refreshAccessToken() {
     const refreshToken = localStorage.getItem("refresh_token");
     if (!refreshToken) {
-        // console.log("No refresh token found. User needs to log in again.");
+        console.log("No refresh token found. User needs to log in again.");
         handleInvalidToken();
         return Promise.reject("No refresh token available");
     }
@@ -47,12 +47,13 @@ export async function refreshAccessToken() {
         if (data.access) {
             localStorage.setItem("access_token", data.access);
             if (data.refresh) {
+                console.log("new refresh!!!!");
                 localStorage.setItem("refresh_token", data.refresh);
             }
             return data.access;
         }
     } catch (error) {
-        // console.log("Error during token refresh:", error);
+        console.log("Error during token refresh:", error);
         handleInvalidToken();
         return Promise.reject(error);
     }
@@ -82,10 +83,10 @@ export const makeAuthenticatedRequest = async (url, options = {}) => {
         if (!response)
             return null;
         if (response.status === 401 || response.status === 403) {
-            // console.log("Access token expired, attempting refresh..");
+            console.log("Access token expired, attempting refresh..");
             const newAccessToken = await refreshAccessToken();
             if (!newAccessToken) {
-                // console.log("Failed to refresh access token.");
+                console.log("Failed to refresh access token.");
                 localStorage.clear();
                 navigateTo('/login', true);
                 return null;
@@ -96,7 +97,7 @@ export const makeAuthenticatedRequest = async (url, options = {}) => {
         return response;
 
     } catch (error) {
-        // console.log("Fetch error:", error);
+        console.log("Fetch error:", error);
         return null;
     }
 };
@@ -111,13 +112,14 @@ export const loadLoginPage = () => {
     .then((response) => response.json())
     .then(data => {
         if (data.form_html) {
+            // console.log('Form html returned!');
             document.getElementById('content-area').innerHTML = data.form_html;
         } else {
-            // console.log('Form HTML not found in response:', data);
+            console.log('Form HTML not found in response:', data);
         }
     })
     .catch(error => {
-        // console.log('Error loading page', error);
+        console.log('Error loading page', error);
     });
 };
 
@@ -149,7 +151,7 @@ export const handleLogin = async () => {
                 displayLoginError('login-form', data.message);
         }
     } catch (error) {
-        // console.log('Error logging in:', error);
+        console.log('Error logging in:', error);
 
     }
 };
@@ -173,13 +175,14 @@ export const loadSignupPage = () => {
     .then((response) => response.json())
     .then(data => {
         if (data.form_html) {
+            console.log('Form html returned!');
             document.getElementById('content-area').innerHTML = data.form_html;
         } else {
-            // console.log('Form HTML not found in response:', data);
+            console.log('Form HTML not found in response:', data);
         }
     })
     .catch(error => {
-        // console.log('Error loading page', error);
+        console.log('Error loading page', error);
     });
 };
 
@@ -207,7 +210,7 @@ export const handleSignup = async () => {
         }
     })
     .catch(error => {
-        // console.log('Error submitting signup form:', error);
+        console.log('Error submitting signup form:', error);
         navigateTo('signup', true)
     });
 };

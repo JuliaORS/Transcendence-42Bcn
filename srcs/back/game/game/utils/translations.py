@@ -35,10 +35,10 @@ def get_lang_words(lang):
 			'winner_is': "El ganador es",
 			'start': "¡Comenzar!",
 			'try_again': "Inténtalo de nuevo",
-			'ready': "¿Listo?",
+			"ready": "¿Listo?",
 			"go": "¡Vamos!",
-			'enemy': "Enemigo",
-			'waiting_enemy': "Esperando al enemigo...",
+			"enemy": "Enemigo",
+			"waiting_enemy": "Esperando al enemigo...",
 			"enemy_connected": "¡Enemigo conectado!",
 			"wins": "Gana",
 			"exit": "Salir",
@@ -61,6 +61,8 @@ def get_lang_words(lang):
 			"user_not_authenticated": "Usuario no autenticado",
 			'restart': "Reiniciar",
 			'waiting_for_players': "Esperando a los jugadores...",
+			'quit_tournament': "Salir del torneo",
+			"restart": "Reiniciar",
 			"congrats": "¡Felicidades! ¡Has ganado!",
 			"good_luck": "Mejor suerte la próxima vez...",
 			"back_tour": "Volver a la página del torneo",
@@ -69,6 +71,7 @@ def get_lang_words(lang):
 			"tournament_not_found": "Torneo no encontrado",
 			'quit_tournament_special': "<span  class=\"button-content-trn\">Salir del torneo</span>",
 			'back_tour_special': "<span  class=\"button-content-trn\">Volver a la página del torneo</span>",
+
 		}
 	elif lang == 'CA':
 		return {
@@ -99,10 +102,10 @@ def get_lang_words(lang):
 			'winner_is': "El guanyador és",
 			'start': "Començar!",
 			'try_again': "Jugar de nou",
-			'ready': "Preparat?",
+			"ready": "Preparat?",
 			"go": "Som-hi!",
-			'enemy': "Enemic",
-			'waiting_enemy': "Esperant l'enemic...",
+			"enemy": "Enemic",
+			"waiting_enemy": "Esperant l'enemic...",
 			"enemy_connected": "Enemic connectat!",
 			"wins": "Guanya",
 			"exit": "Sortir",
@@ -124,6 +127,7 @@ def get_lang_words(lang):
 			'remove_friend': "Eliminar amic",
 			"user_not_authenticated": "Usuari no autenticat",
 			'restart': "Reiniciar",
+			'quit_tournament': "Sortir del torneig",
 			'waiting_for_players': "Esperant als jugadors...",
 			"congrats": "Felicitats! Has guanyat!",
 			"good_luck": "Més sort la pròxima vegada...",
@@ -133,6 +137,7 @@ def get_lang_words(lang):
 			"tournament_not_found": "Torneig no trobat",
 			'quit_tournament_special': "<span  class=\"button-content-trn\">Sortir del torneig</span>",
 			'back_tour_special': "<span  class=\"button-content-trn\">Tornar a la pàgina del torneig</span>",
+
 		}
 	elif lang == 'RU':
 		return {
@@ -143,7 +148,7 @@ def get_lang_words(lang):
 			'create': "Создать",
 			'create_room': "Создать комнату",
 			'join': "Присоединиться",
-			'create_tournament': "Создать tурнир",
+			'create_tournament': "Создать Турнир",
 			'number_players': "Количество игроков",
 			'players_number': "Введите количество игроков:",
 			'submit': "Отправить",
@@ -164,10 +169,10 @@ def get_lang_words(lang):
 			'winner_wo': "Победитель:",
 			'start': "НАЧАТЬ",
 			'try_again': "ЕЩЕ РАЗ!",
-			'ready': "Готов?",
-			'go': "ВПЕРЕД!",
-			'enemy': "@Враг",
-			'waiting_enemy': "Ожидание врага...",
+			"ready": "Готов?",
+			"go": "ВПЕРЕД!",
+			"enemy": "@Враг",
+			"waiting_enemy": "Ожидание врага...",
 			"enemy_connected": "Враг прибыл!",
 			"wins": "победил",
 			"exit": "ВЫХОД",
@@ -178,7 +183,9 @@ def get_lang_words(lang):
 			'medium': "Средний",
 			'hard': "Высокий",
 			'restart': "Заново", 
+			"congrats": "Ура! Ты победил!",
 			"good_luck": "Удачи в следующий раз...",
+			"back_tour" : "Назад в турнир",
 			'play_my_game': "Играть",
 			'last_10_games_performance': "Статистика последних 10 игр",
             'game_evolution': "Статистика игр",
@@ -188,15 +195,18 @@ def get_lang_words(lang):
 			'access_denied': "Доступ запрещен",
 			'add_friend': "Добавить друга",
 			'remove_friend': "Удалить друга",
+			'quit_tournament': "Выйти из турнира",
 			"user_not_authenticated": "Пользователь не аутентифицирован",
 			'waiting_for_players': "Ожидание игроков...",
 			"congrats": "Поздравляем! Вы выиграли!",
+			"good_luck": "Удачи в следующий раз...",
 			"back_tour": "Вернуться на страницу турнира",
 			"create_room": "Создать комнату",
 			"tournament_results": "Результаты турнира",
 			"tournament_not_found": "Турнир не найден",
 			'quit_tournament_special': "<span  class=\"button-content-trn\">Покинуть турнир</span>",
 			'back_tour_special': "<span  class=\"button-content-trn\">Вернуться на страницу турнира</span>",
+
 		}
 	elif lang == 'LV':
 		return {
@@ -207,7 +217,7 @@ def get_lang_words(lang):
 			'create': "Izveidot",
 			'create_room': "Izveidot istabu",
 			'join': "Pievienoties",
-			'create_tournament': "Izveidot turnīru",
+			'create_tournament': "Izveidot Turnīru",
 			'number_players': "Spēlētāju skaits",
 			'players_number': "Ievadiet spēlētāju skaitu:",
 			'submit': "Iesniegt",
@@ -227,10 +237,10 @@ def get_lang_words(lang):
 			'winner_is': "Uzvarētājs ir",
 			'start': "Sākt!",
 			'try_again': "Mēģini vēlreiz",
-			'ready': "Gatavs ?",
+			"ready": "Gatavs ?",
 			"go": "Aiziet !",
-			'enemy': "Ienaidnieks",
-			'waiting_enemy': "Gaida ienaidnieku...",
+			"enemy": "Ienaidnieks",
+			"waiting_enemy": "Gaida ienaidnieku...",
 			"enemy_connected": "Ienaidnieks pievienojās!",
 			"wins": "Uzvar",
 			"exit": "Iziet",
@@ -252,6 +262,7 @@ def get_lang_words(lang):
 			'remove_friend': "Noņemt draugu",
 			"user_not_authenticated": "Lietotājs nav autentificēts",
 			'restart': "Restartēt",
+			'quit_tournament': "Iziet no turnīra",
 			'waiting_for_players': "Gaida spēlētājus...",
 			"congrats": "Apsveicam! Tu uzvarēji!",
 			"good_luck": "Veiksmi nākamreiz...",
@@ -261,6 +272,7 @@ def get_lang_words(lang):
 			"tournament_not_found": "Turnīrs nav atrasts",
 			'quit_tournament_special': "<span  class=\"button-content-trn\">Iziet no turnīra</span>",
 			'back_tour_special': "<span  class=\"button-content-trn\">Atpakaļ uz turnīra lapu</span>",
+
 		}
 	else:
 		return {
@@ -293,8 +305,8 @@ def get_lang_words(lang):
 			'try_again': "TRY AGAIN",
 			'ready': "READY ?",
 			'go': "GO !",
-			'enemy': 'enemy',
-			'waiting_enemy': "Waiting for the enemy...",
+			'enemy': "Enemy",
+			"waiting_enemy": "Waiting for the enemy...",
 			"enemy_connected": "Enemy arrived !",
 			"wins": "wins",
 			"exit": "EXIT",
@@ -324,4 +336,5 @@ def get_lang_words(lang):
 			"tournament_results": "Tournament Results",
 			'quit_tournament_special': "<span  class=\"button-content-trn\">Quit tournament</span>",
 			'back_tour_special': "<span  class=\"button-content-trn\">Back to tournament page</span>",
+
 		}
