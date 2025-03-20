@@ -97,7 +97,7 @@ document.addEventListener("headerLoaded", () => {
 
             languageMenu.addEventListener("click", event => {
                 const lang = event.target.getAttribute("data-lang");
-                console.warn(lang);
+                // console.warn(lang);
                 if (lang) { 
                     updateLanguage(lang);
                 }

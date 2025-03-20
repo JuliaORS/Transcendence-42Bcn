@@ -159,24 +159,46 @@ function checkIfAIneedStop() {
     }
 }
 
-async function displayCountdown()
+// async function displayCountdown()
+// {
+// 	//if (tournamentId)
+// 	//	return ;
+// 	if (gameLoopId)
+// 		cancelAnimationFrame(gameLoopId);
+// 	let div = document.getElementById("wait");
+// 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+// 	div.innerHTML = dict["ready"];
+// 	div.style.display = "block";
+// 	div.style.fontSize = Math.floor(canvas.width * 0.05) + "px";
+// 	ctx.fillStyle = "rgb(0 0 0 / 25%)";
+// 	ctx.fillRect(0, 0, canvas.width, canvas.height);
+// 	await new Promise(resolve => setTimeout(resolve, 500));
+// 	div.innerHTML = dict["go"];
+// 	await new Promise(resolve => setTimeout(resolve, 500));
+// 	div.style.display = "none";
+// 	await gameAILoop();
+// }
+
+async function readySteadyGo(countdown = 3)
 {
-	//if (tournamentId)
-	//	return ;
-	if (gameLoopId)
-		cancelAnimationFrame(gameLoopId);
+	const msg = ["1", "2", "3"];
 	let div = document.getElementById("wait");
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	div.innerHTML = dict["ready"];
-	div.style.display = "block";
-	div.style.fontSize = Math.floor(canvas.width * 0.05) + "px";
-	ctx.fillStyle = "rgb(0 0 0 / 25%)";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	await new Promise(resolve => setTimeout(resolve, 500));
-	div.innerHTML = dict["go"];
-	await new Promise(resolve => setTimeout(resolve, 500));
-	div.style.display = "none";
-	await gameAILoop();
+
+	if (div) {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		div.textContent = msg[countdown];
+		div.style.fontSize = Math.floor(canvas.width * 0.25) + "px";
+
+		ctx.fillStyle = "rgb(0 0 0 / 25%)";
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		div.style.display = "block";
+		while (countdown >= 0) {
+            div.textContent = msg[countdown];
+            await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500ms before the next update
+            countdown--;
+        }
+		div.style.display = "none";
+	}
 }
 
 
@@ -200,12 +222,23 @@ async function gameAILoop() {
     player.move();
     AI.move();
     checkIfAIneedStop();
+
     if (mainUser == 1) {
         if (ball.move(player, AI) && player.score != maxScore && AI.score != maxScore)
-			await displayCountdown();
+		{
+			//await displayCountdown();
+			cancelAnimationFrame(gameLoopId);
+			await readySteadyGo();
+			await gameAILoop();
+		}
     } else {
         if (ball.move(AI, player) && player.score != maxScore && AI.score != maxScore)
-			await displayCountdown();
+		{
+			//await displayCountdown();
+			cancelAnimationFrame(gameLoopId);
+			await readySteadyGo();
+			await gameAILoop();
+		}
     }
     
     if (gameStop || player.score >= maxScore || AI.score >= maxScore) {
@@ -355,6 +388,7 @@ export async function startAIGame(playerName1, playerName2, mainUserNmb, tournam
     window.addEventListener("beforeunload", beforeUnloadHandlerAI);
     intervalID = setInterval(doMovesAI, 1000);
     // console.log(tournamentId);
+    await readySteadyGo();
     await gameAILoop();
 }
 

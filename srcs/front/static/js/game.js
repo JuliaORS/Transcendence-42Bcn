@@ -70,10 +70,10 @@ document.addEventListener("click", function (event) {
 export const playAI = async (args) => {
     clearIntervalIDGame();
     const savedState = localStorage.getItem("gameState");
-    if (savedState)
-        console.log("the state is here!! we need to remove it");
-    else
-        console.log("the state is not here!!");
+    // if (savedState)
+    //     console.log("the state is here!! we need to remove it");
+    // else
+    //     console.log("the state is not here!!");
     localStorage.removeItem("gameState");
 
     Enable3D = getOrInitialize3DOption();

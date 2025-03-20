@@ -285,5 +285,5 @@ export function cleanupLocal() {
     canvas = null;
     ctx = null;
     mainUser = null;
-    console.log("✅ Local game cleaned up!");
+    // console.log("✅ Local game cleaned up!");
 }

@@ -526,6 +526,8 @@ async function animateCameraToField( x = -39.5, y = 22.5, z = 0, duration = 1000
         const t = Math.min(elapsedTime / duration, 1); // Normalize to 0-1 range
         const easedT = easeInOutQuad(t); // Apply easing function
         // Interpolate (lerp) between current and target positions
+        if (!camera) 
+            return ;
         camera.position.lerpVectors(startPosition, targetPosition, easedT);
         controls.target.lerpVectors(startLookAt, targetLookAt, easedT);
         controls.update(); // Update orbit controls
