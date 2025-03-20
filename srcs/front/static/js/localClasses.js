@@ -8,7 +8,7 @@ export class Player {
         } else {
             this.x = canvas.width - this.width;
         }
-        console.log(`player width: ${this.x}`)
+        // console.log(`player width: ${this.x}`)
         this.y = canvas.height / 2 - this.height / 2;
         this.speed = canvas.height * 0.01;
         this.color = "white";   
@@ -108,7 +108,7 @@ export class Ball {
     resetPosition() {
         this.x = this.canvas.width / 2;
         this.y = this.canvas.height / 2;
-        this.xspeed = -this.xspeed; // Alternate serve direction
+        this.xspeed *= -1; // Alternate serve direction
     }
 
 	move(player1, player2) {
@@ -140,7 +140,6 @@ export class Ball {
    		    this.x = player2.x - this.radius;
    		}
 
-
    		// Scoring conditions
    		if (this.x - this.radius <= 0) {
    		    player2.scored();
@@ -155,22 +154,21 @@ export class Ball {
    		    this.resetPosition();
    		    return 1;
    		}
-
    		return 0;
 	}
 
     resize(nW, nH) {
-		const factor = nH / this.canvas.height;         // Factor vertical
-    const factorX = nW / this.canvas.width;           // Factor horizontal
+        const factor = nH / this.canvas.height;         // Factor vertical
+        const factorX = nW / this.canvas.width;           // Factor horizontal
 
-    // Escalamos posición y tamaño
-    this.radius = this.radius * factor;
-    this.x = this.x * factorX;
-    this.y = this.y * factor;
+        // Escalamos posición y tamaño
+        this.radius = this.radius * factor;
+        this.x = this.x * factorX;
+        this.y = this.y * factor;
 
-    // Escalamos las velocidades de forma proporcional
-    this.xspeed = this.xspeed * factorX;
-    this.yspeed = this.yspeed * factor;
+        // Escalamos las velocidades de forma proporcional
+        this.xspeed = this.xspeed * factorX;
+        this.yspeed = this.yspeed * factor;
 
 	}
 }

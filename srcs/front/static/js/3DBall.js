@@ -2,13 +2,8 @@ import * as THREE from "three";
 import { Vector3, Raycaster } from 'three';
 import { EventDispatcher} from 'three';
 import { TextGeometry } from '../three/examples/jsm/geometries/TextGeometry.js';
-import { FontLoader } from '../three/examples/jsm/loaders/FontLoader.js';
-// import { TEXT_PARAMS } from "./3DPlayer";
-import { params, field } from "./3DGame.js";
-// import { pause } from "./Game.js";
-// import { Player, AIPlayer, AIController } from './3DPlayer.js';
+import { field } from "./3DGame.js";
 
-// const ballCoef = 0.3;
 
 const TEXT_PARAMS = {
     size: 3,
@@ -24,11 +19,9 @@ const TEXT_PARAMS = {
 export const ballParams = {
     speed: 25,
     velocity: new Vector3(-0.8, 0, -0.5),
-    // velocity1: new Vector3(-0.8, 0, 0.5),
     radius: 0.7,
     color: 0x9400FF,//params.buttonColor,// 0xffaa00,//0xEAE900,//0xF5F045, //0x550055,
-    maxScore: 2,
-    fontPath: "../three/examples/fonts/helvetiker_regular.typeface.json",
+    maxScore: 5,
 }
 
 export class BasicBall extends EventDispatcher {

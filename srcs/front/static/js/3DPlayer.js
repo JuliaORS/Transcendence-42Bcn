@@ -15,21 +15,11 @@ export const paddle = {
     radSeg: 20,
     speed: 0.6,
     color: 0x7C62A0, //0x550055,
-    fontPath: "../three/examples/fonts/helvetiker_regular.typeface.json",
+    // fontPath: "../three/examples/fonts/helvetiker_regular.typeface.json",
 }
 
 const TEXT_PARAMS = {
     size: 2.5,
-    depth: 0.5,
-    curveSegments: 12,
-    bevelEnabled: true,
-    bevelThickness: 0.1,
-    bevelSize: 0.05,
-    bevelOffset: 0,
-    bevelSegments: 5
-}
-const TEXT_PARAMS_AI = {
-    size: 2,
     depth: 0.5,
     curveSegments: 12,
     bevelEnabled: true,
@@ -55,10 +45,10 @@ export class BasicPlayer {
         this.dict = dict;
         this.speed = paddle.speed;
         this.color = paddle.color;
-        this.loader = new FontLoader();
+        // this.loader = new FontLoader();
         this.textMesh = null;
         this.textName = null;
-        this.fontPath = paddle.fontPath;
+        // this.fontPath = paddle.fontPath;
         this.loadedFont = null;
         this.limits = limits;
         this.up = false;
@@ -92,7 +82,6 @@ export class BasicPlayer {
     }
 
     drawPaddle() {
-        // this.material = new THREE.MeshPhongMaterial({ 
         this.material = new THREE.MeshPhongMaterial({ 
             color: paddle.color,
             specular: 0xFFFFFF, 
@@ -111,18 +100,15 @@ export class BasicPlayer {
         )
         this.mesh.add(this.collitionMesh);
         this.mesh.position.copy(this.initial);
-        // console.log(`I'm ${this.name}, my role is ${this.role}, my position is ${this.initial.z}`);
         this.scene.add(this.mesh);
     }
 
     hide() {
-        // console.log("IN HIDE")
         this.textMesh.visible = false;
         this.textName.visible = false;
     }
 
     show() {
-        // console.log("IN SHOW")
         this.textMesh.visible = true;
         this.textName.visible = true;
     }
@@ -141,7 +127,6 @@ export class BasicPlayer {
     }
 
     updateGeo() {
-        // console.log(`My name is ${this.name}`);
         this.textMesh.geometry.dispose();
         this.textMesh.geometry = this.createTextGeometry(this.text, text.fonts['roboto'], TEXT_PARAMS);
         this.textMesh.castShadow = true;
@@ -164,11 +149,11 @@ export class BasicPlayer {
     }
     move() {
         // console.log(`The arrow left is ${this.down}, mesh pos is ${this.mesh.position.x - paddle.length / 2}, limits are ${this.limits.x * -1 + 0.5}`)
-        if (this.down && ((this.mesh.position.x - paddle.length / 2) > (this.limits.x * -1 + 0.75))) {
+        if (this.down && ((this.mesh.position.x - paddle.length / 2) > (this.limits.x * -1 + 0.5))) {
             // console.log("Move 2 down, arrow left");
             this.mesh.position.x -= this.speed;
         }
-        if (this.up && (this.mesh.position.x + paddle.length / 2) < this.limits.x - 0.75) {
+        if (this.up && (this.mesh.position.x + paddle.length / 2) < this.limits.x - 0.5) {
             // console.log("Move 2 up, arrow right");
             this.mesh.position.x += this.speed;
         }
@@ -204,7 +189,6 @@ export class LocalPlayer extends BasicPlayer {
         this.textName.castShadow = true;
         this.textName.receiveShadow = true;
         this.textName.position.set(field.x + 3, 12, (this.limits.y - 7) * this.role);
-        // console.log("GEOMETRY TEXT CREATED");
         this.scene.add(this.textMesh, this.textName);
     }
 
@@ -222,7 +206,6 @@ export class AIPlayer extends BasicPlayer {
         this.setupText();
         this.drawGeometry();
         this.drawPaddle();
-        // console.log(`My text is ${this.text}, my role is: ${this.text}`);
     }
 
     setupText() {
@@ -247,14 +230,12 @@ export class AIPlayer extends BasicPlayer {
         if (this.role === 1) {
             this.text = this.dict['you'] + ` - ${this.score}`
         }
-        // console.log(`In AI, text: ${this.text}`)
         return (this.text);
     }
 
     getType() {
         return ("aifinish");
     }
-
 }
 
 export class AIController {
@@ -262,7 +243,7 @@ export class AIController {
         this.paddle = paddle;
         this.target = target;
         this.time = 0;
-        this.targetX = this.paddle.mesh.position.x; // Store last target position
+        this.targetX = this.paddle.mesh.position.x;
         this.lastUpdateTime = 0;
         this.maxSpeed = paddle.speed;
         this.limits = limits;
@@ -271,7 +252,6 @@ export class AIController {
     }
 
     update(elapsedTime) {
-        // AI updates its target position only every second
         if (elapsedTime - this.lastUpdateTime >= 1 ) {
             this.doMovesAI();
             this.lastUpdateTime = elapsedTime;
@@ -368,7 +348,6 @@ export class OnlinePlayer extends BasicPlayer {
         this.backY = (limits.x * 2) / data.canvasY / 10;
         this.width = limits.y * 2 * data.padW / data.canvasX;
         this.height = limits.x * 2 * data.padH / data.canvasY;
-        // console.log(`Creating paddles ${name}, position x ${position.z}, position y ${position.x}`)
         this.initial.z = position.z - (this.role * this.width / 2);
         this.speed = data.padS * limits.x * 2;
         this.backendRole = name;

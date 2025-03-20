@@ -243,7 +243,7 @@ export const saveTournamentGameResult = (winner, loser, playerScore, AIScore) =>
     }
     removeBeforeUnloadListenerAI();
     removeBeforeUnloadListenerRemote();
-    console.log("Sending request to save the game result..");
+    // console.log("Sending request to save the game result..");
 
     if (socket.readyState === WebSocket.OPEN)
     {
@@ -423,7 +423,7 @@ export async function tournamentConnect(tourID, nPlayers=null) {
         }
         
         socket.onopen = () => {
-            console.log("WebSocket connection established");
+            // console.log("WebSocket connection established");
             let status = localStorage.getItem('inTournament');
             if (!status)
                 localStorage.setItem('inTournament', 'waiting');
@@ -509,8 +509,8 @@ async function getTournamentId() {
         if (!response) return -1;
         const data = await response.json();
         
-        console.log("ACTIVE?");
-        console.log(data.active);
+        // console.log("ACTIVE?");
+        // console.log(data.active);
 
         if (!data.active) {
             return id;  // If not active, return the id

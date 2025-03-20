@@ -10,13 +10,9 @@ let intentionalDisconnect = false;
 export function isTokenExpired(token) {
     try {
         const decoded = jwt_decode(token);
-        // Ensure the token has an expiration field
-        // console.log(`DEcoded token: `, decoded);
         if (!decoded.exp) {
-            console.log("Token missing expiration claim");
             return true;
         }
-      // JWT 'exp' is usually in seconds, so compare against Date.now() in milliseconds.
         return Date.now() >= decoded.exp * 1000;
     } catch (error) {
       // If token is invalid or cannot be decoded, treat it as expired.
@@ -69,7 +65,7 @@ export async function connectWS(access_token)
     }
         socket.onclose = async (event) => {
 
-        console.log('WebSocket Disconnected. ');
+        // console.log('WebSocket Disconnected. ');
         access_token = localStorage.getItem('access_token');
         // if (event.code === 4001) {
 		// 	// Token expired; refresh token logic

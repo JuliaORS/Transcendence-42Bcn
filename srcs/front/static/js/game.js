@@ -417,8 +417,9 @@ async function getUsername() {
 }
 
 
-export async function restartOnline() {
+export async function quitOnline() {
     cleanRemote();
+    navigateTo("/remote-home", true);
     playOnline();
 }
 

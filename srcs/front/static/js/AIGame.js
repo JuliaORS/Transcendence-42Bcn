@@ -9,7 +9,7 @@ let AI = null;
 let mainUser = null; // if the main user is player 1 or 2
 let ball = null;
 let gameLoopId = null;
-let maxScore = 2;
+let maxScore = 5;
 let intervalID = null;
 let targetY = null;
 let difficulty = 3; // 0.5-1 => easy, 3 => already low chance for ai to lose, 5 => almost impossible; 

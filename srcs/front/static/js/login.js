@@ -31,13 +31,13 @@ export async function refreshAccessToken() {
         });
 
         if (response.status === 401) {
-            console.log("Refresh token is invalid or expired. Logging out...");
+            // console.log("Refresh token is invalid or expired. Logging out...");
             handleInvalidToken();
             return Promise.reject("Refresh token expired");
         }
 
         if (!response.ok) {
-            console.log("Unexpected error during token refresh:", response.statusText);
+            // console.log("Unexpected error during token refresh:", response.statusText);
             handleInvalidToken();
             return Promise.reject("Unexpected refresh error");
         }
@@ -62,7 +62,7 @@ export async function refreshAccessToken() {
 export const makeAuthenticatedRequest = async (url, options = {}) => {
     const accessToken = localStorage.getItem("access_token");
     if (!accessToken) {
-        console.log("No access token available.");
+        // console.log("No access token available.");
         localStorage.clear();
         disconnectWS();
         navigateTo('/login', true);
@@ -112,7 +112,7 @@ export const loadLoginPage = () => {
     .then((response) => response.json())
     .then(data => {
         if (data.form_html) {
-            console.log('Form html returned!');
+            // console.log('Form html returned!');
             document.getElementById('content-area').innerHTML = data.form_html;
         } else {
             console.log('Form HTML not found in response:', data);

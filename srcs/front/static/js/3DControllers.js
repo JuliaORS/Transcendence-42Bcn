@@ -1,4 +1,4 @@
-import { gameStarted, gameEnded, text } from "./3DGame.js";
+// import { gameStarted, gameEnded, text } from "./3DGame.js";
 
 export function handlePlayersKeydown(e, player1, player2, player3) {
 
@@ -13,8 +13,8 @@ export function handlePlayersKeydown(e, player1, player2, player3) {
     }
 
     if (player3) {
-        if (e.key === "ArrowLeft") player3.up = true;
-        if (e.key === "ArrowRight") player3.down = true;
+        if (e.key === "ArrowRight") player3.up = true;
+        if (e.key === "ArrowLeft") player3.down = true;
     }
 }
 
@@ -31,7 +31,7 @@ export function handlePlayersKeyup(e, player1, player2, player3) {
     }
 
     if (player3) {
-        if (e.key === "ArrowLeft") player3.up = false;
-        if (e.key === "ArrowRight") player3.down = false;
+        if (e.key === "ArrowRight") player3.up = false;
+        if (e.key === "ArrowLeft") player3.down = false;
     }
 }
