@@ -22,10 +22,10 @@ const host = window.env.HOST;
 const protocolSocket = window.env.PROTOCOL_SOCKET;
 
 let renderer, scene, camera, lights, headerHeight;
-let limits, plane, addplane, controls;
+let limits, plane, controls;
 let player1, player2, ai, mainplayer, mainUser, ball; // if the main user is player 1 or 2
 let dict, cameraId, gameLoopId, socket, roomID, tournamentId;
-let moveCamera, remote, pause, gameStarted = false, gameEnded = false;
+let remote, pause, gameStarted = false, gameEnded = false;
 export let text = null;
 
 const clock = new THREE.Clock();
@@ -185,7 +185,7 @@ export function setupRemoteControls(player) {
 }
 
 async function initializeWebSocket() {
-    let retries = 0;
+    // let retries = 0;
     const access_token = localStorage.getItem("access_token");
 	const token = await checkToken(access_token);
     if (!token) return ;
