@@ -432,3 +432,18 @@ export function cleanupAI() {
     // console.log("✅ AI game cleaned up!");
 }
 
+document.addEventListener("touchmove", (e) => {
+	if (!canvas)
+		return ;
+	for (let touch of e.changedTouches)
+	{
+		const rect = canvas.getBoundingClientRect();
+		const relY = touch.clientY - rect.top;
+		player.y = relY - player.height / 2;
+	}
+	if (player.y < 0)
+		player.y = 0;
+	else if (player.y > canvas.height - player.height)
+		player.y = canvas.height - player.height;
+	e.preventDefault();
+}, { passive: false });

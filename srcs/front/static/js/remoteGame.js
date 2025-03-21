@@ -445,3 +445,23 @@ const beforeUnloadHandlerRemote = () => {
 export const removeBeforeUnloadListenerRemote = () => {
     window.removeEventListener("beforeunload", beforeUnloadHandlerRemote);
 };
+
+
+document.addEventListener("touchmove", (e) => {
+	if (!canvas)
+		return ;
+	for (let touch of e.changedTouches) {
+		const rect = canvas.getBoundingClientRect();
+		const relativeY = touch.clientY - rect.top;
+		player.y = (relativeY - player.height / 2) / canvas.height;
+	}
+	if (player.y < 0)
+		player.y = 0;
+	else if (player.y > 1 - player.height / canvas.height)
+		player.y = 1 - player.height / canvas.height;
+	
+	player.send(socket);
+
+	e.preventDefault(); // Prevent scrolling
+}, { passive: false });
+
